@@ -1,0 +1,6 @@
+{
+    "verbose": true,
+    "delay": 1,
+    "watch": ["dist/*"],
+    "ignore": ["types/*"]
+}
