@@ -8,6 +8,7 @@ import {
     FeatureContext,
     GivenStepContext,
     ScenarioContext,
+    ScenarioOutlineContext,
     ThenStepContext,
     WhenStepContext
 } from "./grammar/GherkinParser";
@@ -35,11 +36,44 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         })
     }
 
+    public visitScenarioOutline(ctx: ScenarioOutlineContext): void {
+        const cellNames = ctx.examplesBlock().tableHeader().tableRow().cell().map(cell => cell.text.trim());
+        const values = ctx.examplesBlock().tableRow().map(row => row.cell().map(cell => cell.text.trim()));
+
+        const valueMap = values.map(row => {
+            const item: Record<string, string> = {};
+            for (let i = 0; i < row.length; ++i) {
+                item[cellNames[i]] = row[i];
+            }
+            return item;
+        })
+        const scenarioName = ctx.contentText().text.trim();
+
+        describe(`Scenario outline: ${scenarioName}`, () => {
+            for (const row of valueMap) {
+
+                const step = ctx.step();
+
+                const steps = [step.givenStep(), ...step.andGivenStep(), step.whenStep(), ...step.andWhenStep(), step.thenStep(), ...step.andStep(), ...step.butStep()];
+
+                this.runNextStep(steps, row);
+
+            }
+        })
+    }
+
     protected defaultResult(): void {
         return;
     }
 
-    private runNextStep(steps: (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext)[]) {
+    private replaceKeywords(input: string, replacements: Record<string, string> | undefined): string {
+        return input.replace(/<([^>]+)>/g, (match, keyword) => {
+            const replacement = replacements?.[keyword];
+            return replacement !== undefined ? replacement : match;
+        });
+    }
+
+    private runNextStep(steps: (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext)[], valueMap?: Record<string, string>) {
         const step = steps.shift();
         if (!step) {
             return;
@@ -59,28 +93,21 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             prepare = false;
         }
 
-        const name = `${prefix} ${step.contentText().text.trim()}`;
-        const matchRule = this.stepDefinitions.filter(def => {
-            return def.match.test(name);
-        });
-        if (!matchRule.length) {
-            throw new Error(`Missing step definition '${name}'`);
-        } else if (matchRule.length > 1) {
-            throw new Error(`Multiple step definition match '${name}':\n${matchRule.map(rule => rule.match.toString()).join("\n")}`);
-        }
+        const name = `${prefix} ${this.replaceKeywords(step.contentText().text.trim(), valueMap)}`;
+        const stepDefinition = this.getMatchingStepDefinition(name);
+
+        const {step: stepCall, match} = stepDefinition;
 
         const docStringContents = step.docString()?.DOC_STRING_TEXT()?.text;
-
-        const {step: stepCall, match} = matchRule[0];
         let args: string [] = [];
         let matchResults = match.exec(name);
-        if(matchResults) {
+        if (matchResults) {
             args = matchResults.slice(1);
         }
         if (docStringContents) {
-            const cleanedDocstring = docStringContents.trim()
+            const cleanedDocstring = this.replaceKeywords(docStringContents.trim()
                 .split(/((\r\n)|\r|\n)]/)
-                .map(line=>line.trimStart()).join(EOL)
+                .map(line => line.trimStart()).join(EOL), valueMap)
             args.push(cleanedDocstring);
         }
 
@@ -89,15 +116,27 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
                 beforeEach(() => {
                     stepCall(this.world, ...args);
                 });
-                this.runNextStep(steps)
+                this.runNextStep(steps, valueMap)
             })
         } else {
             it(name, () => {
                 stepCall(this.world, ...args);
             })
-            this.runNextStep(steps);
+            this.runNextStep(steps, valueMap);
         }
 
     }
 
+    private getMatchingStepDefinition(name: string) {
+        const matchingStepDefinitions = this.stepDefinitions.filter(def => {
+            return def.match.test(name);
+        });
+        if (!matchingStepDefinitions.length) {
+            throw new Error(`Missing step definition '${name}'`);
+        } else if (matchingStepDefinitions.length > 1) {
+            throw new Error(`Multiple step definition match '${name}':\n${matchingStepDefinitions.map(rule => rule.match.toString()).join("\n")}`);
+        }
+        const stepDefinition = matchingStepDefinitions[0];
+        return stepDefinition;
+    }
 }

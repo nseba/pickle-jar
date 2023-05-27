@@ -14,7 +14,7 @@ scenario: SCENARIO contentText step (tags)?;
 
 scenarioOutline: SCENARIO_OUTLINE contentText step examplesBlock (tags)?;
 
-examplesBlock: EXAMPLES (tableHeader)? tableRow+;
+examplesBlock: EXAMPLES tableHeader tableRow+;
 
 tableHeader: tableRow;
 

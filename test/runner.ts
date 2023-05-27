@@ -27,12 +27,20 @@ const stepDefinitions: StepDefinition<World>[] = [{
         world["second step"] = "true";
     }
 }, {
+    match: /^Given a scenario outline named '(.+)'$/, step: (world, name) => {
+        world["outline-name"] = name;
+    }
+}, {
     match: /^When running the test framework$/, step: world => {
         /*nop*/
     }
 }, {
     match: /^When using two steps/, step: world => {
         /*nop*/
+    }
+}, {
+    match: /^When the outline parameter is '(.+)'$/, step: (world, param) => {
+        world["outline-param"] = param;
     }
 }, {
     match: /^Then no error should be reported$/, step: world => {
@@ -52,15 +60,27 @@ const stepDefinitions: StepDefinition<World>[] = [{
         expect(world['input string']).not.toBeUndefined();
         expect(world['input string']).toBe(text);
     }
-},{
+}, {
     match: /^Then the first step ran$/, step: world => {
         expect(world['first step']).toBe("true");
     }
-},{
+}, {
     match: /^Then the second step ran$/, step: world => {
         expect(world['second step']).toBe("true");
     }
-},{
+}, {
+    match: /^Then the world stores the '([^']+)' '([^']+)'/, step: (world, name, parameter) => {
+        expect(world['outline-name']).not.toBeUndefined();
+        expect(world['outline-name']).toBe(name);
+
+        expect(world['outline-param']).not.toBeUndefined();
+        expect(world['outline-param']).toBe(parameter);
+    }
+}, {
+    match: /^Then it can also be used as a docstring$/, step: (world, docstring) => {
+        expect(docstring).toBe(`${world['outline-name']} ${world['outline-param']}`)
+    }
+}, {
     match: /^But the third step didn't run$/, step: world => {
         expect(world['third step']).toBeUndefined();
     }
