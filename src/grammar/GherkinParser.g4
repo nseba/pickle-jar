@@ -4,13 +4,15 @@ options {
   tokenVocab=GherkinLexer;
 }
 
-feature: FEATURE text (background)? (scenario | scenarioOutline)*;
+featureFile: feature*;
 
-background: BACKGROUND text (step)*;
+feature: FEATURE contentText (background)? (scenario | scenarioOutline)*;
 
-scenario: SCENARIO text (step)* (examplesBlock)? (docString)? (tags)?;
+background: BACKGROUND contentText step;
 
-scenarioOutline: SCENARIO_OUTLINE text (step)* examplesBlock (docString)? (tags)?;
+scenario: SCENARIO contentText step (tags)?;
+
+scenarioOutline: SCENARIO_OUTLINE contentText step examplesBlock (tags)?;
 
 examplesBlock: EXAMPLES (tableHeader)? tableRow+;
 
@@ -18,19 +20,26 @@ tableHeader: tableRow;
 
 tableRow: PIPE cell+ (PIPE cell+)* PIPE;
 
-cell: text;
+cell: contentText;
 
-step: givenStep | whenStep | thenStep | andStep | butStep;
+step: givenStep andGivenStep* whenStep andWhenStep* thenStep andStep* butStep*;
 
-givenStep: GIVEN text (docString)? (tags)?;
-whenStep: WHEN text (docString)? (tags)?;
-thenStep: THEN text (docString)? (tags)?;
-andStep: AND text (docString)? (tags)?;
-butStep: BUT text (docString)? (tags)?;
+givenStep: GIVEN contentText (tags)? docString?;
 
-docStringContents: (ANGLE_BRACKET_WORD | DOC_STRING_TEXT)+;
-docString: DOC_STRING_QUOT docStringContents? DOC_STRING_QUOT;
+andGivenStep: AND_GIVEN contentText (tags)? docString?;
+
+whenStep: WHEN contentText (tags)? docString?;
+
+andWhenStep: AND_WHEN contentText (tags)? docString?;
+
+thenStep: THEN contentText (tags)? docString?;
+
+andStep: AND contentText (tags)? docString?;
+
+butStep: BUT contentText (tags)? docString?;
+
+docString: DOC_STRING_QUOT DOC_STRING_TEXT? DOC_STRING_QUOT;
 
 tags: TAG+;
 
-text: (TEXT_CHARACTER | QUOTED_TEXT | ESCAPED_CHAR | ANGLE_BRACKET_PLACEHOLDER)+;
+contentText: TEXT_CHARACTER+;

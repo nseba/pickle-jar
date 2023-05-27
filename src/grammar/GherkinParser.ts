@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Generated from ./src/grammar/GherkinParser.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
@@ -31,60 +32,60 @@ export class GherkinParser extends Parser {
 	public static readonly SCENARIO = 2;
 	public static readonly SCENARIO_OUTLINE = 3;
 	public static readonly GIVEN = 4;
-	public static readonly WHEN = 5;
-	public static readonly THEN = 6;
-	public static readonly AND = 7;
-	public static readonly BUT = 8;
-	public static readonly TEXT_CHARACTER = 9;
-	public static readonly PIPE = 10;
-	public static readonly DOC_STRING_QUOT = 11;
-	public static readonly TAG = 12;
-	public static readonly QUOTED_TEXT = 13;
-	public static readonly ESCAPED_CHAR = 14;
+	public static readonly AND_GIVEN = 5;
+	public static readonly WHEN = 6;
+	public static readonly AND_WHEN = 7;
+	public static readonly THEN = 8;
+	public static readonly AND = 9;
+	public static readonly BUT = 10;
+	public static readonly EXAMPLES = 11;
+	public static readonly BACKGROUND = 12;
+	public static readonly PIPE = 13;
+	public static readonly TAG = 14;
 	public static readonly COMMENT = 15;
-	public static readonly MARKDOWN = 16;
-	public static readonly ANGLE_BRACKET_PLACEHOLDER = 17;
-	public static readonly WS = 18;
-	public static readonly ANGLE_BRACKET_WORD = 19;
+	public static readonly TEXT_CHARACTER = 16;
+	public static readonly WS = 17;
+	public static readonly WSS = 18;
+	public static readonly DOC_STRING_QUOT = 19;
 	public static readonly DOC_STRING_TEXT = 20;
-	public static readonly BACKGROUND = 21;
-	public static readonly EXAMPLES = 22;
-	public static readonly RULE_feature = 0;
-	public static readonly RULE_background = 1;
-	public static readonly RULE_scenario = 2;
-	public static readonly RULE_scenarioOutline = 3;
-	public static readonly RULE_examplesBlock = 4;
-	public static readonly RULE_tableHeader = 5;
-	public static readonly RULE_tableRow = 6;
-	public static readonly RULE_cell = 7;
-	public static readonly RULE_step = 8;
-	public static readonly RULE_givenStep = 9;
-	public static readonly RULE_whenStep = 10;
-	public static readonly RULE_thenStep = 11;
-	public static readonly RULE_andStep = 12;
-	public static readonly RULE_butStep = 13;
-	public static readonly RULE_docStringContents = 14;
-	public static readonly RULE_docString = 15;
-	public static readonly RULE_markdown = 16;
-	public static readonly RULE_tags = 17;
-	public static readonly RULE_text = 18;
+	public static readonly DOC_STRING_WS = 21;
+	public static readonly RULE_featureFile = 0;
+	public static readonly RULE_feature = 1;
+	public static readonly RULE_background = 2;
+	public static readonly RULE_scenario = 3;
+	public static readonly RULE_scenarioOutline = 4;
+	public static readonly RULE_examplesBlock = 5;
+	public static readonly RULE_tableHeader = 6;
+	public static readonly RULE_tableRow = 7;
+	public static readonly RULE_cell = 8;
+	public static readonly RULE_step = 9;
+	public static readonly RULE_givenStep = 10;
+	public static readonly RULE_andGivenStep = 11;
+	public static readonly RULE_whenStep = 12;
+	public static readonly RULE_andWhenStep = 13;
+	public static readonly RULE_thenStep = 14;
+	public static readonly RULE_andStep = 15;
+	public static readonly RULE_butStep = 16;
+	public static readonly RULE_docString = 17;
+	public static readonly RULE_tags = 18;
+	public static readonly RULE_contentText = 19;
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
-		"feature", "background", "scenario", "scenarioOutline", "examplesBlock", 
-		"tableHeader", "tableRow", "cell", "step", "givenStep", "whenStep", "thenStep", 
-		"andStep", "butStep", "docStringContents", "docString", "markdown", "tags", 
-		"text",
+		"featureFile", "feature", "background", "scenario", "scenarioOutline", 
+		"examplesBlock", "tableHeader", "tableRow", "cell", "step", "givenStep", 
+		"andGivenStep", "whenStep", "andWhenStep", "thenStep", "andStep", "butStep", 
+		"docString", "tags", "contentText",
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
-		undefined, "'Feature:'", "'Scenario:'", "'Scenario Outline:'", "'Given'", 
-		"'When'", "'Then'", "'And'", "'But'", undefined, "'|'",
+		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
+		undefined, undefined, undefined, undefined, undefined, undefined, "'|'",
 	];
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
-		undefined, "FEATURE", "SCENARIO", "SCENARIO_OUTLINE", "GIVEN", "WHEN", 
-		"THEN", "AND", "BUT", "TEXT_CHARACTER", "PIPE", "DOC_STRING_QUOT", "TAG", 
-		"QUOTED_TEXT", "ESCAPED_CHAR", "COMMENT", "MARKDOWN", "ANGLE_BRACKET_PLACEHOLDER", 
-		"WS", "ANGLE_BRACKET_WORD", "DOC_STRING_TEXT", "BACKGROUND", "EXAMPLES",
+		undefined, "FEATURE", "SCENARIO", "SCENARIO_OUTLINE", "GIVEN", "AND_GIVEN", 
+		"WHEN", "AND_WHEN", "THEN", "AND", "BUT", "EXAMPLES", "BACKGROUND", "PIPE", 
+		"TAG", "COMMENT", "TEXT_CHARACTER", "WS", "WSS", "DOC_STRING_QUOT", "DOC_STRING_TEXT", 
+		"DOC_STRING_WS",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(GherkinParser._LITERAL_NAMES, GherkinParser._SYMBOLIC_NAMES, []);
 
@@ -113,52 +114,24 @@ export class GherkinParser extends Parser {
 		this._interp = new ParserATNSimulator(GherkinParser._ATN, this);
 	}
 	// @RuleVersion(0)
-	public feature(): FeatureContext {
-		let _localctx: FeatureContext = new FeatureContext(this._ctx, this.state);
-		this.enterRule(_localctx, 0, GherkinParser.RULE_feature);
+	public featureFile(): FeatureFileContext {
+		let _localctx: FeatureFileContext = new FeatureFileContext(this._ctx, this.state);
+		this.enterRule(_localctx, 0, GherkinParser.RULE_featureFile);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 38;
-			this.match(GherkinParser.FEATURE);
-			this.state = 39;
-			this.text();
-			this.state = 41;
+			this.state = 43;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if (_la === GherkinParser.BACKGROUND) {
+			while (_la === GherkinParser.FEATURE) {
+				{
 				{
 				this.state = 40;
-				this.background();
+				this.feature();
 				}
-			}
-
-			this.state = 47;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === GherkinParser.SCENARIO || _la === GherkinParser.SCENARIO_OUTLINE) {
-				{
+				}
 				this.state = 45;
-				this._errHandler.sync(this);
-				switch (this._input.LA(1)) {
-				case GherkinParser.SCENARIO:
-					{
-					this.state = 43;
-					this.scenario();
-					}
-					break;
-				case GherkinParser.SCENARIO_OUTLINE:
-					{
-					this.state = 44;
-					this.scenarioOutline();
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
-				}
-				}
-				this.state = 49;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -179,25 +152,49 @@ export class GherkinParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public background(): BackgroundContext {
-		let _localctx: BackgroundContext = new BackgroundContext(this._ctx, this.state);
-		this.enterRule(_localctx, 2, GherkinParser.RULE_background);
+	public feature(): FeatureContext {
+		let _localctx: FeatureContext = new FeatureContext(this._ctx, this.state);
+		this.enterRule(_localctx, 2, GherkinParser.RULE_feature);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 50;
-			this.match(GherkinParser.BACKGROUND);
-			this.state = 51;
-			this.text();
+			this.state = 46;
+			this.match(GherkinParser.FEATURE);
+			this.state = 47;
+			this.contentText();
+			this.state = 49;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.BACKGROUND) {
+				{
+				this.state = 48;
+				this.background();
+				}
+			}
+
 			this.state = 55;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.GIVEN) | (1 << GherkinParser.WHEN) | (1 << GherkinParser.THEN) | (1 << GherkinParser.AND) | (1 << GherkinParser.BUT))) !== 0)) {
+			while (_la === GherkinParser.SCENARIO || _la === GherkinParser.SCENARIO_OUTLINE) {
 				{
-				{
-				this.state = 52;
-				this.step();
+				this.state = 53;
+				this._errHandler.sync(this);
+				switch (this._input.LA(1)) {
+				case GherkinParser.SCENARIO:
+					{
+					this.state = 51;
+					this.scenario();
+					}
+					break;
+				case GherkinParser.SCENARIO_OUTLINE:
+					{
+					this.state = 52;
+					this.scenarioOutline();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 				}
 				}
 				this.state = 57;
@@ -221,51 +218,90 @@ export class GherkinParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public scenario(): ScenarioContext {
-		let _localctx: ScenarioContext = new ScenarioContext(this._ctx, this.state);
-		this.enterRule(_localctx, 4, GherkinParser.RULE_scenario);
-		let _la: number;
+	public background(): BackgroundContext {
+		let _localctx: BackgroundContext = new BackgroundContext(this._ctx, this.state);
+		this.enterRule(_localctx, 4, GherkinParser.RULE_background);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 58;
-			this.match(GherkinParser.SCENARIO);
+			this.match(GherkinParser.BACKGROUND);
 			this.state = 59;
-			this.text();
+			this.contentText();
+			this.state = 60;
+			this.step();
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public scenario(): ScenarioContext {
+		let _localctx: ScenarioContext = new ScenarioContext(this._ctx, this.state);
+		this.enterRule(_localctx, 6, GherkinParser.RULE_scenario);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 62;
+			this.match(GherkinParser.SCENARIO);
 			this.state = 63;
+			this.contentText();
+			this.state = 64;
+			this.step();
+			this.state = 66;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.GIVEN) | (1 << GherkinParser.WHEN) | (1 << GherkinParser.THEN) | (1 << GherkinParser.AND) | (1 << GherkinParser.BUT))) !== 0)) {
+			if (_la === GherkinParser.TAG) {
 				{
-				{
-				this.state = 60;
-				this.step();
-				}
-				}
 				this.state = 65;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			this.state = 67;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === GherkinParser.EXAMPLES) {
-				{
-				this.state = 66;
-				this.examplesBlock();
+				this.tags();
 				}
 			}
 
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public scenarioOutline(): ScenarioOutlineContext {
+		let _localctx: ScenarioOutlineContext = new ScenarioOutlineContext(this._ctx, this.state);
+		this.enterRule(_localctx, 8, GherkinParser.RULE_scenarioOutline);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 68;
+			this.match(GherkinParser.SCENARIO_OUTLINE);
+			this.state = 69;
+			this.contentText();
 			this.state = 70;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === GherkinParser.DOC_STRING_QUOT) {
-				{
-				this.state = 69;
-				this.docString();
-				}
-			}
-
+			this.step();
+			this.state = 71;
+			this.examplesBlock();
 			this.state = 73;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
@@ -293,100 +329,36 @@ export class GherkinParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public scenarioOutline(): ScenarioOutlineContext {
-		let _localctx: ScenarioOutlineContext = new ScenarioOutlineContext(this._ctx, this.state);
-		this.enterRule(_localctx, 6, GherkinParser.RULE_scenarioOutline);
+	public examplesBlock(): ExamplesBlockContext {
+		let _localctx: ExamplesBlockContext = new ExamplesBlockContext(this._ctx, this.state);
+		this.enterRule(_localctx, 10, GherkinParser.RULE_examplesBlock);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 75;
-			this.match(GherkinParser.SCENARIO_OUTLINE);
-			this.state = 76;
-			this.text();
-			this.state = 80;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.GIVEN) | (1 << GherkinParser.WHEN) | (1 << GherkinParser.THEN) | (1 << GherkinParser.AND) | (1 << GherkinParser.BUT))) !== 0)) {
-				{
-				{
-				this.state = 77;
-				this.step();
-				}
-				}
-				this.state = 82;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			this.state = 83;
-			this.examplesBlock();
-			this.state = 85;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === GherkinParser.DOC_STRING_QUOT) {
-				{
-				this.state = 84;
-				this.docString();
-				}
-			}
-
-			this.state = 88;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === GherkinParser.TAG) {
-				{
-				this.state = 87;
-				this.tags();
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public examplesBlock(): ExamplesBlockContext {
-		let _localctx: ExamplesBlockContext = new ExamplesBlockContext(this._ctx, this.state);
-		this.enterRule(_localctx, 8, GherkinParser.RULE_examplesBlock);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 90;
 			this.match(GherkinParser.EXAMPLES);
-			this.state = 92;
+			this.state = 77;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 11, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 6, this._ctx) ) {
 			case 1:
 				{
-				this.state = 91;
+				this.state = 76;
 				this.tableHeader();
 				}
 				break;
 			}
-			this.state = 95;
+			this.state = 80;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			do {
 				{
 				{
-				this.state = 94;
+				this.state = 79;
 				this.tableRow();
 				}
 				}
-				this.state = 97;
+				this.state = 82;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			} while (_la === GherkinParser.PIPE);
@@ -409,11 +381,11 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public tableHeader(): TableHeaderContext {
 		let _localctx: TableHeaderContext = new TableHeaderContext(this._ctx, this.state);
-		this.enterRule(_localctx, 10, GherkinParser.RULE_tableHeader);
+		this.enterRule(_localctx, 12, GherkinParser.RULE_tableHeader);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 99;
+			this.state = 84;
 			this.tableRow();
 			}
 		}
@@ -434,59 +406,59 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public tableRow(): TableRowContext {
 		let _localctx: TableRowContext = new TableRowContext(this._ctx, this.state);
-		this.enterRule(_localctx, 12, GherkinParser.RULE_tableRow);
+		this.enterRule(_localctx, 14, GherkinParser.RULE_tableRow);
 		let _la: number;
 		try {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 101;
+			this.state = 86;
 			this.match(GherkinParser.PIPE);
-			this.state = 103;
+			this.state = 88;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			do {
 				{
 				{
-				this.state = 102;
+				this.state = 87;
 				this.cell();
 				}
 				}
-				this.state = 105;
+				this.state = 90;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.TEXT_CHARACTER) | (1 << GherkinParser.QUOTED_TEXT) | (1 << GherkinParser.ESCAPED_CHAR) | (1 << GherkinParser.MARKDOWN) | (1 << GherkinParser.ANGLE_BRACKET_PLACEHOLDER))) !== 0));
-			this.state = 115;
+			} while (_la === GherkinParser.TEXT_CHARACTER);
+			this.state = 100;
 			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 15, this._ctx);
+			_alt = this.interpreter.adaptivePredict(this._input, 10, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					{
 					{
-					this.state = 107;
+					this.state = 92;
 					this.match(GherkinParser.PIPE);
-					this.state = 109;
+					this.state = 94;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 					do {
 						{
 						{
-						this.state = 108;
+						this.state = 93;
 						this.cell();
 						}
 						}
-						this.state = 111;
+						this.state = 96;
 						this._errHandler.sync(this);
 						_la = this._input.LA(1);
-					} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.TEXT_CHARACTER) | (1 << GherkinParser.QUOTED_TEXT) | (1 << GherkinParser.ESCAPED_CHAR) | (1 << GherkinParser.MARKDOWN) | (1 << GherkinParser.ANGLE_BRACKET_PLACEHOLDER))) !== 0));
+					} while (_la === GherkinParser.TEXT_CHARACTER);
 					}
 					}
 				}
-				this.state = 117;
+				this.state = 102;
 				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 15, this._ctx);
+				_alt = this.interpreter.adaptivePredict(this._input, 10, this._ctx);
 			}
-			this.state = 118;
+			this.state = 103;
 			this.match(GherkinParser.PIPE);
 			}
 		}
@@ -507,12 +479,12 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public cell(): CellContext {
 		let _localctx: CellContext = new CellContext(this._ctx, this.state);
-		this.enterRule(_localctx, 14, GherkinParser.RULE_cell);
+		this.enterRule(_localctx, 16, GherkinParser.RULE_cell);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 120;
-			this.text();
+			this.state = 105;
+			this.contentText();
 			}
 		}
 		catch (re) {
@@ -532,48 +504,73 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public step(): StepContext {
 		let _localctx: StepContext = new StepContext(this._ctx, this.state);
-		this.enterRule(_localctx, 16, GherkinParser.RULE_step);
+		this.enterRule(_localctx, 18, GherkinParser.RULE_step);
+		let _la: number;
 		try {
-			this.state = 127;
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 107;
+			this.givenStep();
+			this.state = 111;
 			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case GherkinParser.GIVEN:
-				this.enterOuterAlt(_localctx, 1);
+			_la = this._input.LA(1);
+			while (_la === GherkinParser.AND_GIVEN) {
+				{
+				{
+				this.state = 108;
+				this.andGivenStep();
+				}
+				}
+				this.state = 113;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			this.state = 114;
+			this.whenStep();
+			this.state = 118;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === GherkinParser.AND_WHEN) {
+				{
+				{
+				this.state = 115;
+				this.andWhenStep();
+				}
+				}
+				this.state = 120;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			this.state = 121;
+			this.thenStep();
+			this.state = 125;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === GherkinParser.AND) {
+				{
 				{
 				this.state = 122;
-				this.givenStep();
-				}
-				break;
-			case GherkinParser.WHEN:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 123;
-				this.whenStep();
-				}
-				break;
-			case GherkinParser.THEN:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 124;
-				this.thenStep();
-				}
-				break;
-			case GherkinParser.AND:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 125;
 				this.andStep();
 				}
-				break;
-			case GherkinParser.BUT:
-				this.enterOuterAlt(_localctx, 5);
+				}
+				this.state = 127;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			this.state = 131;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === GherkinParser.BUT) {
 				{
-				this.state = 126;
+				{
+				this.state = 128;
 				this.butStep();
 				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+				}
+				this.state = 133;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
 			}
 		}
 		catch (re) {
@@ -593,34 +590,83 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public givenStep(): GivenStepContext {
 		let _localctx: GivenStepContext = new GivenStepContext(this._ctx, this.state);
-		this.enterRule(_localctx, 18, GherkinParser.RULE_givenStep);
+		this.enterRule(_localctx, 20, GherkinParser.RULE_givenStep);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 129;
+			this.state = 134;
 			this.match(GherkinParser.GIVEN);
-			this.state = 130;
-			this.text();
-			this.state = 132;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 17, this._ctx) ) {
-			case 1:
-				{
-				this.state = 131;
-				this.docString();
-				}
-				break;
-			}
 			this.state = 135;
+			this.contentText();
+			this.state = 137;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 18, this._ctx) ) {
-			case 1:
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.TAG) {
 				{
-				this.state = 134;
+				this.state = 136;
 				this.tags();
 				}
-				break;
 			}
+
+			this.state = 140;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.DOC_STRING_QUOT) {
+				{
+				this.state = 139;
+				this.docString();
+				}
+			}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public andGivenStep(): AndGivenStepContext {
+		let _localctx: AndGivenStepContext = new AndGivenStepContext(this._ctx, this.state);
+		this.enterRule(_localctx, 22, GherkinParser.RULE_andGivenStep);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 142;
+			this.match(GherkinParser.AND_GIVEN);
+			this.state = 143;
+			this.contentText();
+			this.state = 145;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.TAG) {
+				{
+				this.state = 144;
+				this.tags();
+				}
+			}
+
+			this.state = 148;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.DOC_STRING_QUOT) {
+				{
+				this.state = 147;
+				this.docString();
+				}
+			}
+
 			}
 		}
 		catch (re) {
@@ -640,34 +686,83 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public whenStep(): WhenStepContext {
 		let _localctx: WhenStepContext = new WhenStepContext(this._ctx, this.state);
-		this.enterRule(_localctx, 20, GherkinParser.RULE_whenStep);
+		this.enterRule(_localctx, 24, GherkinParser.RULE_whenStep);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 137;
+			this.state = 150;
 			this.match(GherkinParser.WHEN);
-			this.state = 138;
-			this.text();
-			this.state = 140;
+			this.state = 151;
+			this.contentText();
+			this.state = 153;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 19, this._ctx) ) {
-			case 1:
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.TAG) {
 				{
-				this.state = 139;
-				this.docString();
-				}
-				break;
-			}
-			this.state = 143;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 20, this._ctx) ) {
-			case 1:
-				{
-				this.state = 142;
+				this.state = 152;
 				this.tags();
 				}
-				break;
 			}
+
+			this.state = 156;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.DOC_STRING_QUOT) {
+				{
+				this.state = 155;
+				this.docString();
+				}
+			}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public andWhenStep(): AndWhenStepContext {
+		let _localctx: AndWhenStepContext = new AndWhenStepContext(this._ctx, this.state);
+		this.enterRule(_localctx, 26, GherkinParser.RULE_andWhenStep);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 158;
+			this.match(GherkinParser.AND_WHEN);
+			this.state = 159;
+			this.contentText();
+			this.state = 161;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.TAG) {
+				{
+				this.state = 160;
+				this.tags();
+				}
+			}
+
+			this.state = 164;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.DOC_STRING_QUOT) {
+				{
+				this.state = 163;
+				this.docString();
+				}
+			}
+
 			}
 		}
 		catch (re) {
@@ -687,34 +782,35 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public thenStep(): ThenStepContext {
 		let _localctx: ThenStepContext = new ThenStepContext(this._ctx, this.state);
-		this.enterRule(_localctx, 22, GherkinParser.RULE_thenStep);
+		this.enterRule(_localctx, 28, GherkinParser.RULE_thenStep);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 145;
+			this.state = 166;
 			this.match(GherkinParser.THEN);
-			this.state = 146;
-			this.text();
-			this.state = 148;
+			this.state = 167;
+			this.contentText();
+			this.state = 169;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 21, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 23, this._ctx) ) {
 			case 1:
 				{
-				this.state = 147;
-				this.docString();
-				}
-				break;
-			}
-			this.state = 151;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 22, this._ctx) ) {
-			case 1:
-				{
-				this.state = 150;
+				this.state = 168;
 				this.tags();
 				}
 				break;
 			}
+			this.state = 172;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.DOC_STRING_QUOT) {
+				{
+				this.state = 171;
+				this.docString();
+				}
+			}
+
 			}
 		}
 		catch (re) {
@@ -734,34 +830,35 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public andStep(): AndStepContext {
 		let _localctx: AndStepContext = new AndStepContext(this._ctx, this.state);
-		this.enterRule(_localctx, 24, GherkinParser.RULE_andStep);
+		this.enterRule(_localctx, 30, GherkinParser.RULE_andStep);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 153;
+			this.state = 174;
 			this.match(GherkinParser.AND);
-			this.state = 154;
-			this.text();
-			this.state = 156;
+			this.state = 175;
+			this.contentText();
+			this.state = 177;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 23, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 25, this._ctx) ) {
 			case 1:
 				{
-				this.state = 155;
-				this.docString();
-				}
-				break;
-			}
-			this.state = 159;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 24, this._ctx) ) {
-			case 1:
-				{
-				this.state = 158;
+				this.state = 176;
 				this.tags();
 				}
 				break;
 			}
+			this.state = 180;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === GherkinParser.DOC_STRING_QUOT) {
+				{
+				this.state = 179;
+				this.docString();
+				}
+			}
+
 			}
 		}
 		catch (re) {
@@ -781,82 +878,35 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public butStep(): ButStepContext {
 		let _localctx: ButStepContext = new ButStepContext(this._ctx, this.state);
-		this.enterRule(_localctx, 26, GherkinParser.RULE_butStep);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 161;
-			this.match(GherkinParser.BUT);
-			this.state = 162;
-			this.text();
-			this.state = 164;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 25, this._ctx) ) {
-			case 1:
-				{
-				this.state = 163;
-				this.docString();
-				}
-				break;
-			}
-			this.state = 167;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 26, this._ctx) ) {
-			case 1:
-				{
-				this.state = 166;
-				this.tags();
-				}
-				break;
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public docStringContents(): DocStringContentsContext {
-		let _localctx: DocStringContentsContext = new DocStringContentsContext(this._ctx, this.state);
-		this.enterRule(_localctx, 28, GherkinParser.RULE_docStringContents);
+		this.enterRule(_localctx, 32, GherkinParser.RULE_butStep);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 170;
+			this.state = 182;
+			this.match(GherkinParser.BUT);
+			this.state = 183;
+			this.contentText();
+			this.state = 185;
+			this._errHandler.sync(this);
+			switch ( this.interpreter.adaptivePredict(this._input, 27, this._ctx) ) {
+			case 1:
+				{
+				this.state = 184;
+				this.tags();
+				}
+				break;
+			}
+			this.state = 188;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			do {
+			if (_la === GherkinParser.DOC_STRING_QUOT) {
 				{
-				{
-				this.state = 169;
-				_la = this._input.LA(1);
-				if (!(_la === GherkinParser.ANGLE_BRACKET_WORD || _la === GherkinParser.DOC_STRING_TEXT)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
+				this.state = 187;
+				this.docString();
+				}
+			}
 
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				}
-				}
-				this.state = 172;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			} while (_la === GherkinParser.ANGLE_BRACKET_WORD || _la === GherkinParser.DOC_STRING_TEXT);
 			}
 		}
 		catch (re) {
@@ -876,50 +926,25 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public docString(): DocStringContext {
 		let _localctx: DocStringContext = new DocStringContext(this._ctx, this.state);
-		this.enterRule(_localctx, 30, GherkinParser.RULE_docString);
+		this.enterRule(_localctx, 34, GherkinParser.RULE_docString);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 174;
+			this.state = 190;
 			this.match(GherkinParser.DOC_STRING_QUOT);
-			this.state = 176;
+			this.state = 192;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if (_la === GherkinParser.ANGLE_BRACKET_WORD || _la === GherkinParser.DOC_STRING_TEXT) {
+			if (_la === GherkinParser.DOC_STRING_TEXT) {
 				{
-				this.state = 175;
-				this.docStringContents();
+				this.state = 191;
+				this.match(GherkinParser.DOC_STRING_TEXT);
 				}
 			}
 
-			this.state = 178;
+			this.state = 194;
 			this.match(GherkinParser.DOC_STRING_QUOT);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public markdown(): MarkdownContext {
-		let _localctx: MarkdownContext = new MarkdownContext(this._ctx, this.state);
-		this.enterRule(_localctx, 32, GherkinParser.RULE_markdown);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 180;
-			this.match(GherkinParser.MARKDOWN);
 			}
 		}
 		catch (re) {
@@ -939,12 +964,12 @@ export class GherkinParser extends Parser {
 	// @RuleVersion(0)
 	public tags(): TagsContext {
 		let _localctx: TagsContext = new TagsContext(this._ctx, this.state);
-		this.enterRule(_localctx, 34, GherkinParser.RULE_tags);
+		this.enterRule(_localctx, 36, GherkinParser.RULE_tags);
 		try {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 183;
+			this.state = 197;
 			this._errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -952,7 +977,7 @@ export class GherkinParser extends Parser {
 				case 1:
 					{
 					{
-					this.state = 182;
+					this.state = 196;
 					this.match(GherkinParser.TAG);
 					}
 					}
@@ -960,9 +985,9 @@ export class GherkinParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				this.state = 185;
+				this.state = 199;
 				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 29, this._ctx);
+				_alt = this.interpreter.adaptivePredict(this._input, 30, this._ctx);
 			} while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
 			}
 		}
@@ -981,62 +1006,30 @@ export class GherkinParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public text(): TextContext {
-		let _localctx: TextContext = new TextContext(this._ctx, this.state);
-		this.enterRule(_localctx, 36, GherkinParser.RULE_text);
+	public contentText(): ContentTextContext {
+		let _localctx: ContentTextContext = new ContentTextContext(this._ctx, this.state);
+		this.enterRule(_localctx, 38, GherkinParser.RULE_contentText);
 		try {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 192;
+			this.state = 202;
 			this._errHandler.sync(this);
 			_alt = 1;
 			do {
 				switch (_alt) {
 				case 1:
 					{
-					this.state = 192;
-					this._errHandler.sync(this);
-					switch (this._input.LA(1)) {
-					case GherkinParser.TEXT_CHARACTER:
-						{
-						this.state = 187;
-						this.match(GherkinParser.TEXT_CHARACTER);
-						}
-						break;
-					case GherkinParser.QUOTED_TEXT:
-						{
-						this.state = 188;
-						this.match(GherkinParser.QUOTED_TEXT);
-						}
-						break;
-					case GherkinParser.ESCAPED_CHAR:
-						{
-						this.state = 189;
-						this.match(GherkinParser.ESCAPED_CHAR);
-						}
-						break;
-					case GherkinParser.ANGLE_BRACKET_PLACEHOLDER:
-						{
-						this.state = 190;
-						this.match(GherkinParser.ANGLE_BRACKET_PLACEHOLDER);
-						}
-						break;
-					case GherkinParser.MARKDOWN:
-						{
-						this.state = 191;
-						this.markdown();
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
+					{
+					this.state = 201;
+					this.match(GherkinParser.TEXT_CHARACTER);
 					}
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
-				this.state = 194;
+				this.state = 204;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 31, this._ctx);
 			} while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -1058,93 +1051,95 @@ export class GherkinParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x18\xC7\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x17\xD1\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
 		"\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04" +
-		"\x13\t\x13\x04\x14\t\x14\x03\x02\x03\x02\x03\x02\x05\x02,\n\x02\x03\x02" +
-		"\x03\x02\x07\x020\n\x02\f\x02\x0E\x023\v\x02\x03\x03\x03\x03\x03\x03\x07" +
-		"\x038\n\x03\f\x03\x0E\x03;\v\x03\x03\x04\x03\x04\x03\x04\x07\x04@\n\x04" +
-		"\f\x04\x0E\x04C\v\x04\x03\x04\x05\x04F\n\x04\x03\x04\x05\x04I\n\x04\x03" +
-		"\x04\x05\x04L\n\x04\x03\x05\x03\x05\x03\x05\x07\x05Q\n\x05\f\x05\x0E\x05" +
-		"T\v\x05\x03\x05\x03\x05\x05\x05X\n\x05\x03\x05\x05\x05[\n\x05\x03\x06" +
-		"\x03\x06\x05\x06_\n\x06\x03\x06\x06\x06b\n\x06\r\x06\x0E\x06c\x03\x07" +
-		"\x03\x07\x03\b\x03\b\x06\bj\n\b\r\b\x0E\bk\x03\b\x03\b\x06\bp\n\b\r\b" +
-		"\x0E\bq\x07\bt\n\b\f\b\x0E\bw\v\b\x03\b\x03\b\x03\t\x03\t\x03\n\x03\n" +
-		"\x03\n\x03\n\x03\n\x05\n\x82\n\n\x03\v\x03\v\x03\v\x05\v\x87\n\v\x03\v" +
-		"\x05\v\x8A\n\v\x03\f\x03\f\x03\f\x05\f\x8F\n\f\x03\f\x05\f\x92\n\f\x03" +
-		"\r\x03\r\x03\r\x05\r\x97\n\r\x03\r\x05\r\x9A\n\r\x03\x0E\x03\x0E\x03\x0E" +
-		"\x05\x0E\x9F\n\x0E\x03\x0E\x05\x0E\xA2\n\x0E\x03\x0F\x03\x0F\x03\x0F\x05" +
-		"\x0F\xA7\n\x0F\x03\x0F\x05\x0F\xAA\n\x0F\x03\x10\x06\x10\xAD\n\x10\r\x10" +
-		"\x0E\x10\xAE\x03\x11\x03\x11\x05\x11\xB3\n\x11\x03\x11\x03\x11\x03\x12" +
-		"\x03\x12\x03\x13\x06\x13\xBA\n\x13\r\x13\x0E\x13\xBB\x03\x14\x03\x14\x03" +
-		"\x14\x03\x14\x03\x14\x06\x14\xC3\n\x14\r\x14\x0E\x14\xC4\x03\x14\x02\x02" +
-		"\x02\x15\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12" +
-		"\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x1E\x02 \x02\"\x02$\x02&" +
-		"\x02\x02\x03\x03\x02\x15\x16\x02\xD9\x02(\x03\x02\x02\x02\x044\x03\x02" +
-		"\x02\x02\x06<\x03\x02\x02\x02\bM\x03\x02\x02\x02\n\\\x03\x02\x02\x02\f" +
-		"e\x03\x02\x02\x02\x0Eg\x03\x02\x02\x02\x10z\x03\x02\x02\x02\x12\x81\x03" +
-		"\x02\x02\x02\x14\x83\x03\x02\x02\x02\x16\x8B\x03\x02\x02\x02\x18\x93\x03" +
-		"\x02\x02\x02\x1A\x9B\x03\x02\x02\x02\x1C\xA3\x03\x02\x02\x02\x1E\xAC\x03" +
-		"\x02\x02\x02 \xB0\x03\x02\x02\x02\"\xB6\x03\x02\x02\x02$\xB9\x03\x02\x02" +
-		"\x02&\xC2\x03\x02\x02\x02()\x07\x03\x02\x02)+\x05&\x14\x02*,\x05\x04\x03" +
-		"\x02+*\x03\x02\x02\x02+,\x03\x02\x02\x02,1\x03\x02\x02\x02-0\x05\x06\x04" +
-		"\x02.0\x05\b\x05\x02/-\x03\x02\x02\x02/.\x03\x02\x02\x0203\x03\x02\x02" +
-		"\x021/\x03\x02\x02\x0212\x03\x02\x02\x022\x03\x03\x02\x02\x0231\x03\x02" +
-		"\x02\x0245\x07\x17\x02\x0259\x05&\x14\x0268\x05\x12\n\x0276\x03\x02\x02" +
-		"\x028;\x03\x02\x02\x0297\x03\x02\x02\x029:\x03\x02\x02\x02:\x05\x03\x02" +
-		"\x02\x02;9\x03\x02\x02\x02<=\x07\x04\x02\x02=A\x05&\x14\x02>@\x05\x12" +
-		"\n\x02?>\x03\x02\x02\x02@C\x03\x02\x02\x02A?\x03\x02\x02\x02AB\x03\x02" +
-		"\x02\x02BE\x03\x02\x02\x02CA\x03\x02\x02\x02DF\x05\n\x06\x02ED\x03\x02" +
-		"\x02\x02EF\x03\x02\x02\x02FH\x03\x02\x02\x02GI\x05 \x11\x02HG\x03\x02" +
-		"\x02\x02HI\x03\x02\x02\x02IK\x03\x02\x02\x02JL\x05$\x13\x02KJ\x03\x02" +
-		"\x02\x02KL\x03\x02\x02\x02L\x07\x03\x02\x02\x02MN\x07\x05\x02\x02NR\x05" +
-		"&\x14\x02OQ\x05\x12\n\x02PO\x03\x02\x02\x02QT\x03\x02\x02\x02RP\x03\x02" +
-		"\x02\x02RS\x03\x02\x02\x02SU\x03\x02\x02\x02TR\x03\x02\x02\x02UW\x05\n" +
-		"\x06\x02VX\x05 \x11\x02WV\x03\x02\x02\x02WX\x03\x02\x02\x02XZ\x03\x02" +
-		"\x02\x02Y[\x05$\x13\x02ZY\x03\x02\x02\x02Z[\x03\x02\x02\x02[\t\x03\x02" +
-		"\x02\x02\\^\x07\x18\x02\x02]_\x05\f\x07\x02^]\x03\x02\x02\x02^_\x03\x02" +
-		"\x02\x02_a\x03\x02\x02\x02`b\x05\x0E\b\x02a`\x03\x02\x02\x02bc\x03\x02" +
-		"\x02\x02ca\x03\x02\x02\x02cd\x03\x02\x02\x02d\v\x03\x02\x02\x02ef\x05" +
-		"\x0E\b\x02f\r\x03\x02\x02\x02gi\x07\f\x02\x02hj\x05\x10\t\x02ih\x03\x02" +
-		"\x02\x02jk\x03\x02\x02\x02ki\x03\x02\x02\x02kl\x03\x02\x02\x02lu\x03\x02" +
-		"\x02\x02mo\x07\f\x02\x02np\x05\x10\t\x02on\x03\x02\x02\x02pq\x03\x02\x02" +
-		"\x02qo\x03\x02\x02\x02qr\x03\x02\x02\x02rt\x03\x02\x02\x02sm\x03\x02\x02" +
-		"\x02tw\x03\x02\x02\x02us\x03\x02\x02\x02uv\x03\x02\x02\x02vx\x03\x02\x02" +
-		"\x02wu\x03\x02\x02\x02xy\x07\f\x02\x02y\x0F\x03\x02\x02\x02z{\x05&\x14" +
-		"\x02{\x11\x03\x02\x02\x02|\x82\x05\x14\v\x02}\x82\x05\x16\f\x02~\x82\x05" +
-		"\x18\r\x02\x7F\x82\x05\x1A\x0E\x02\x80\x82\x05\x1C\x0F\x02\x81|\x03\x02" +
-		"\x02\x02\x81}\x03\x02\x02\x02\x81~\x03\x02\x02\x02\x81\x7F\x03\x02\x02" +
-		"\x02\x81\x80\x03\x02\x02\x02\x82\x13\x03\x02\x02\x02\x83\x84\x07\x06\x02" +
-		"\x02\x84\x86\x05&\x14\x02\x85\x87\x05 \x11\x02\x86\x85\x03\x02\x02\x02" +
-		"\x86\x87\x03\x02\x02\x02\x87\x89\x03\x02\x02\x02\x88\x8A\x05$\x13\x02" +
-		"\x89\x88\x03\x02\x02\x02\x89\x8A\x03\x02\x02\x02\x8A\x15\x03\x02\x02\x02" +
-		"\x8B\x8C\x07\x07\x02\x02\x8C\x8E\x05&\x14\x02\x8D\x8F\x05 \x11\x02\x8E" +
-		"\x8D\x03\x02\x02\x02\x8E\x8F\x03\x02\x02\x02\x8F\x91\x03\x02\x02\x02\x90" +
-		"\x92\x05$\x13\x02\x91\x90\x03\x02\x02\x02\x91\x92\x03\x02\x02\x02\x92" +
-		"\x17\x03\x02\x02\x02\x93\x94\x07\b\x02\x02\x94\x96\x05&\x14\x02\x95\x97" +
-		"\x05 \x11\x02\x96\x95\x03\x02\x02\x02\x96\x97\x03\x02\x02\x02\x97\x99" +
-		"\x03\x02\x02\x02\x98\x9A\x05$\x13\x02\x99\x98\x03\x02\x02\x02\x99\x9A" +
-		"\x03\x02\x02\x02\x9A\x19\x03\x02\x02\x02\x9B\x9C\x07\t\x02\x02\x9C\x9E" +
-		"\x05&\x14\x02\x9D\x9F\x05 \x11\x02\x9E\x9D\x03\x02\x02\x02\x9E\x9F\x03" +
-		"\x02\x02\x02\x9F\xA1\x03\x02\x02\x02\xA0\xA2\x05$\x13\x02\xA1\xA0\x03" +
-		"\x02\x02\x02\xA1\xA2\x03\x02\x02\x02\xA2\x1B\x03\x02\x02\x02\xA3\xA4\x07" +
-		"\n\x02\x02\xA4\xA6\x05&\x14\x02\xA5\xA7\x05 \x11\x02\xA6\xA5\x03\x02\x02" +
-		"\x02\xA6\xA7\x03\x02\x02\x02\xA7\xA9\x03\x02\x02\x02\xA8\xAA\x05$\x13" +
-		"\x02\xA9\xA8\x03\x02\x02\x02\xA9\xAA\x03\x02\x02\x02\xAA\x1D\x03\x02\x02" +
-		"\x02\xAB\xAD\t\x02\x02\x02\xAC\xAB\x03\x02\x02\x02\xAD\xAE\x03\x02\x02" +
-		"\x02\xAE\xAC\x03\x02\x02\x02\xAE\xAF\x03\x02\x02\x02\xAF\x1F\x03\x02\x02" +
-		"\x02\xB0\xB2\x07\r\x02\x02\xB1\xB3\x05\x1E\x10\x02\xB2\xB1\x03\x02\x02" +
-		"\x02\xB2\xB3\x03\x02\x02\x02\xB3\xB4\x03\x02\x02\x02\xB4\xB5\x07\r\x02" +
-		"\x02\xB5!\x03\x02\x02\x02\xB6\xB7\x07\x12\x02\x02\xB7#\x03\x02\x02\x02" +
-		"\xB8\xBA\x07\x0E\x02\x02\xB9\xB8\x03\x02\x02\x02\xBA\xBB\x03\x02\x02\x02" +
-		"\xBB\xB9\x03\x02\x02\x02\xBB\xBC\x03\x02\x02\x02\xBC%\x03\x02\x02\x02" +
-		"\xBD\xC3\x07\v\x02\x02\xBE\xC3\x07\x0F\x02\x02\xBF\xC3\x07\x10\x02\x02" +
-		"\xC0\xC3\x07\x13\x02\x02\xC1\xC3\x05\"\x12\x02\xC2\xBD\x03\x02\x02\x02" +
-		"\xC2\xBE\x03\x02\x02\x02\xC2\xBF\x03\x02\x02\x02\xC2\xC0\x03\x02\x02\x02" +
-		"\xC2\xC1\x03\x02\x02\x02\xC3\xC4\x03\x02\x02\x02\xC4\xC2\x03\x02\x02\x02" +
-		"\xC4\xC5\x03\x02\x02\x02\xC5\'\x03\x02\x02\x02\"+/19AEHKRWZ^ckqu\x81\x86" +
-		"\x89\x8E\x91\x96\x99\x9E\xA1\xA6\xA9\xAE\xB2\xBB\xC2\xC4";
+		"\x13\t\x13\x04\x14\t\x14\x04\x15\t\x15\x03\x02\x07\x02,\n\x02\f\x02\x0E" +
+		"\x02/\v\x02\x03\x03\x03\x03\x03\x03\x05\x034\n\x03\x03\x03\x03\x03\x07" +
+		"\x038\n\x03\f\x03\x0E\x03;\v\x03\x03\x04\x03\x04\x03\x04\x03\x04\x03\x05" +
+		"\x03\x05\x03\x05\x03\x05\x05\x05E\n\x05\x03\x06\x03\x06\x03\x06\x03\x06" +
+		"\x03\x06\x05\x06L\n\x06\x03\x07\x03\x07\x05\x07P\n\x07\x03\x07\x06\x07" +
+		"S\n\x07\r\x07\x0E\x07T\x03\b\x03\b\x03\t\x03\t\x06\t[\n\t\r\t\x0E\t\\" +
+		"\x03\t\x03\t\x06\ta\n\t\r\t\x0E\tb\x07\te\n\t\f\t\x0E\th\v\t\x03\t\x03" +
+		"\t\x03\n\x03\n\x03\v\x03\v\x07\vp\n\v\f\v\x0E\vs\v\v\x03\v\x03\v\x07\v" +
+		"w\n\v\f\v\x0E\vz\v\v\x03\v\x03\v\x07\v~\n\v\f\v\x0E\v\x81\v\v\x03\v\x07" +
+		"\v\x84\n\v\f\v\x0E\v\x87\v\v\x03\f\x03\f\x03\f\x05\f\x8C\n\f\x03\f\x05" +
+		"\f\x8F\n\f\x03\r\x03\r\x03\r\x05\r\x94\n\r\x03\r\x05\r\x97\n\r\x03\x0E" +
+		"\x03\x0E\x03\x0E\x05\x0E\x9C\n\x0E\x03\x0E\x05\x0E\x9F\n\x0E\x03\x0F\x03" +
+		"\x0F\x03\x0F\x05\x0F\xA4\n\x0F\x03\x0F\x05\x0F\xA7\n\x0F\x03\x10\x03\x10" +
+		"\x03\x10\x05\x10\xAC\n\x10\x03\x10\x05\x10\xAF\n\x10\x03\x11\x03\x11\x03" +
+		"\x11\x05\x11\xB4\n\x11\x03\x11\x05\x11\xB7\n\x11\x03\x12\x03\x12\x03\x12" +
+		"\x05\x12\xBC\n\x12\x03\x12\x05\x12\xBF\n\x12\x03\x13\x03\x13\x05\x13\xC3" +
+		"\n\x13\x03\x13\x03\x13\x03\x14\x06\x14\xC8\n\x14\r\x14\x0E\x14\xC9\x03" +
+		"\x15\x06\x15\xCD\n\x15\r\x15\x0E\x15\xCE\x03\x15\x02\x02\x02\x16\x02\x02" +
+		"\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02\x16" +
+		"\x02\x18\x02\x1A\x02\x1C\x02\x1E\x02 \x02\"\x02$\x02&\x02(\x02\x02\x02" +
+		"\x02\xDC\x02-\x03\x02\x02\x02\x040\x03\x02\x02\x02\x06<\x03\x02\x02\x02" +
+		"\b@\x03\x02\x02\x02\nF\x03\x02\x02\x02\fM\x03\x02\x02\x02\x0EV\x03\x02" +
+		"\x02\x02\x10X\x03\x02\x02\x02\x12k\x03\x02\x02\x02\x14m\x03\x02\x02\x02" +
+		"\x16\x88\x03\x02\x02\x02\x18\x90\x03\x02\x02\x02\x1A\x98\x03\x02\x02\x02" +
+		"\x1C\xA0\x03\x02\x02\x02\x1E\xA8\x03\x02\x02\x02 \xB0\x03\x02\x02\x02" +
+		"\"\xB8\x03\x02\x02\x02$\xC0\x03\x02\x02\x02&\xC7\x03\x02\x02\x02(\xCC" +
+		"\x03\x02\x02\x02*,\x05\x04\x03\x02+*\x03\x02\x02\x02,/\x03\x02\x02\x02" +
+		"-+\x03\x02\x02\x02-.\x03\x02\x02\x02.\x03\x03\x02\x02\x02/-\x03\x02\x02" +
+		"\x0201\x07\x03\x02\x0213\x05(\x15\x0224\x05\x06\x04\x0232\x03\x02\x02" +
+		"\x0234\x03\x02\x02\x0249\x03\x02\x02\x0258\x05\b\x05\x0268\x05\n\x06\x02" +
+		"75\x03\x02\x02\x0276\x03\x02\x02\x028;\x03\x02\x02\x0297\x03\x02\x02\x02" +
+		"9:\x03\x02\x02\x02:\x05\x03\x02\x02\x02;9\x03\x02\x02\x02<=\x07\x0E\x02" +
+		"\x02=>\x05(\x15\x02>?\x05\x14\v\x02?\x07\x03\x02\x02\x02@A\x07\x04\x02" +
+		"\x02AB\x05(\x15\x02BD\x05\x14\v\x02CE\x05&\x14\x02DC\x03\x02\x02\x02D" +
+		"E\x03\x02\x02\x02E\t\x03\x02\x02\x02FG\x07\x05\x02\x02GH\x05(\x15\x02" +
+		"HI\x05\x14\v\x02IK\x05\f\x07\x02JL\x05&\x14\x02KJ\x03\x02\x02\x02KL\x03" +
+		"\x02\x02\x02L\v\x03\x02\x02\x02MO\x07\r\x02\x02NP\x05\x0E\b\x02ON\x03" +
+		"\x02\x02\x02OP\x03\x02\x02\x02PR\x03\x02\x02\x02QS\x05\x10\t\x02RQ\x03" +
+		"\x02\x02\x02ST\x03\x02\x02\x02TR\x03\x02\x02\x02TU\x03\x02\x02\x02U\r" +
+		"\x03\x02\x02\x02VW\x05\x10\t\x02W\x0F\x03\x02\x02\x02XZ\x07\x0F\x02\x02" +
+		"Y[\x05\x12\n\x02ZY\x03\x02\x02\x02[\\\x03\x02\x02\x02\\Z\x03\x02\x02\x02" +
+		"\\]\x03\x02\x02\x02]f\x03\x02\x02\x02^`\x07\x0F\x02\x02_a\x05\x12\n\x02" +
+		"`_\x03\x02\x02\x02ab\x03\x02\x02\x02b`\x03\x02\x02\x02bc\x03\x02\x02\x02" +
+		"ce\x03\x02\x02\x02d^\x03\x02\x02\x02eh\x03\x02\x02\x02fd\x03\x02\x02\x02" +
+		"fg\x03\x02\x02\x02gi\x03\x02\x02\x02hf\x03\x02\x02\x02ij\x07\x0F\x02\x02" +
+		"j\x11\x03\x02\x02\x02kl\x05(\x15\x02l\x13\x03\x02\x02\x02mq\x05\x16\f" +
+		"\x02np\x05\x18\r\x02on\x03\x02\x02\x02ps\x03\x02\x02\x02qo\x03\x02\x02" +
+		"\x02qr\x03\x02\x02\x02rt\x03\x02\x02\x02sq\x03\x02\x02\x02tx\x05\x1A\x0E" +
+		"\x02uw\x05\x1C\x0F\x02vu\x03\x02\x02\x02wz\x03\x02\x02\x02xv\x03\x02\x02" +
+		"\x02xy\x03\x02\x02\x02y{\x03\x02\x02\x02zx\x03\x02\x02\x02{\x7F\x05\x1E" +
+		"\x10\x02|~\x05 \x11\x02}|\x03\x02\x02\x02~\x81\x03\x02\x02\x02\x7F}\x03" +
+		"\x02\x02\x02\x7F\x80\x03\x02\x02\x02\x80\x85\x03\x02\x02\x02\x81\x7F\x03" +
+		"\x02\x02\x02\x82\x84\x05\"\x12\x02\x83\x82\x03\x02\x02\x02\x84\x87\x03" +
+		"\x02\x02\x02\x85\x83\x03\x02\x02\x02\x85\x86\x03\x02\x02\x02\x86\x15\x03" +
+		"\x02\x02\x02\x87\x85\x03\x02\x02\x02\x88\x89\x07\x06\x02\x02\x89\x8B\x05" +
+		"(\x15\x02\x8A\x8C\x05&\x14\x02\x8B\x8A\x03\x02\x02\x02\x8B\x8C\x03\x02" +
+		"\x02\x02\x8C\x8E\x03\x02\x02\x02\x8D\x8F\x05$\x13\x02\x8E\x8D\x03\x02" +
+		"\x02\x02\x8E\x8F\x03\x02\x02\x02\x8F\x17\x03\x02\x02\x02\x90\x91\x07\x07" +
+		"\x02\x02\x91\x93\x05(\x15\x02\x92\x94\x05&\x14\x02\x93\x92\x03\x02\x02" +
+		"\x02\x93\x94\x03\x02\x02\x02\x94\x96\x03\x02\x02\x02\x95\x97\x05$\x13" +
+		"\x02\x96\x95\x03\x02\x02\x02\x96\x97\x03\x02\x02\x02\x97\x19\x03\x02\x02" +
+		"\x02\x98\x99\x07\b\x02\x02\x99\x9B\x05(\x15\x02\x9A\x9C\x05&\x14\x02\x9B" +
+		"\x9A\x03\x02\x02\x02\x9B\x9C\x03\x02\x02\x02\x9C\x9E\x03\x02\x02\x02\x9D" +
+		"\x9F\x05$\x13\x02\x9E\x9D\x03\x02\x02\x02\x9E\x9F\x03\x02\x02\x02\x9F" +
+		"\x1B\x03\x02\x02\x02\xA0\xA1\x07\t\x02\x02\xA1\xA3\x05(\x15\x02\xA2\xA4" +
+		"\x05&\x14\x02\xA3\xA2\x03\x02\x02\x02\xA3\xA4\x03\x02\x02\x02\xA4\xA6" +
+		"\x03\x02\x02\x02\xA5\xA7\x05$\x13\x02\xA6\xA5\x03\x02\x02\x02\xA6\xA7" +
+		"\x03\x02\x02\x02\xA7\x1D\x03\x02\x02\x02\xA8\xA9\x07\n\x02\x02\xA9\xAB" +
+		"\x05(\x15\x02\xAA\xAC\x05&\x14\x02\xAB\xAA\x03\x02\x02\x02\xAB\xAC\x03" +
+		"\x02\x02\x02\xAC\xAE\x03\x02\x02\x02\xAD\xAF\x05$\x13\x02\xAE\xAD\x03" +
+		"\x02\x02\x02\xAE\xAF\x03\x02\x02\x02\xAF\x1F\x03\x02\x02\x02\xB0\xB1\x07" +
+		"\v\x02\x02\xB1\xB3\x05(\x15\x02\xB2\xB4\x05&\x14\x02\xB3\xB2\x03\x02\x02" +
+		"\x02\xB3\xB4\x03\x02\x02\x02\xB4\xB6\x03\x02\x02\x02\xB5\xB7\x05$\x13" +
+		"\x02\xB6\xB5\x03\x02\x02\x02\xB6\xB7\x03\x02\x02\x02\xB7!\x03\x02\x02" +
+		"\x02\xB8\xB9\x07\f\x02\x02\xB9\xBB\x05(\x15\x02\xBA\xBC\x05&\x14\x02\xBB" +
+		"\xBA\x03\x02\x02\x02\xBB\xBC\x03\x02\x02\x02\xBC\xBE\x03\x02\x02\x02\xBD" +
+		"\xBF\x05$\x13\x02\xBE\xBD\x03\x02\x02\x02\xBE\xBF\x03\x02\x02\x02\xBF" +
+		"#\x03\x02\x02\x02\xC0\xC2\x07\x15\x02\x02\xC1\xC3\x07\x16\x02\x02\xC2" +
+		"\xC1\x03\x02\x02\x02\xC2\xC3\x03\x02\x02\x02\xC3\xC4\x03\x02\x02\x02\xC4" +
+		"\xC5\x07\x15\x02\x02\xC5%\x03\x02\x02\x02\xC6\xC8\x07\x10\x02\x02\xC7" +
+		"\xC6\x03\x02\x02\x02\xC8\xC9\x03\x02\x02\x02\xC9\xC7\x03\x02\x02\x02\xC9" +
+		"\xCA\x03\x02\x02\x02\xCA\'\x03\x02\x02\x02\xCB\xCD\x07\x12\x02\x02\xCC" +
+		"\xCB\x03\x02\x02\x02\xCD\xCE\x03\x02\x02\x02\xCE\xCC\x03\x02\x02\x02\xCE" +
+		"\xCF\x03\x02\x02\x02\xCF)\x03\x02\x02\x02\"-379DKOT\\bfqx\x7F\x85\x8B" +
+		"\x8E\x93\x96\x9B\x9E\xA3\xA6\xAB\xAE\xB3\xB6\xBB\xBE\xC2\xC9\xCE";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!GherkinParser.__ATN) {
@@ -1156,10 +1151,36 @@ export class GherkinParser extends Parser {
 
 }
 
+export class FeatureFileContext extends ParserRuleContext {
+	public feature(): FeatureContext[];
+	public feature(i: number): FeatureContext;
+	public feature(i?: number): FeatureContext | FeatureContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(FeatureContext);
+		} else {
+			return this.getRuleContext(i, FeatureContext);
+		}
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return GherkinParser.RULE_featureFile; }
+	// @Override
+	public accept<Result>(visitor: GherkinParserVisitor<Result>): Result {
+		if (visitor.visitFeatureFile) {
+			return visitor.visitFeatureFile(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
 export class FeatureContext extends ParserRuleContext {
 	public FEATURE(): TerminalNode { return this.getToken(GherkinParser.FEATURE, 0); }
-	public text(): TextContext {
-		return this.getRuleContext(0, TextContext);
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
 	}
 	public background(): BackgroundContext | undefined {
 		return this.tryGetRuleContext(0, BackgroundContext);
@@ -1200,17 +1221,11 @@ export class FeatureContext extends ParserRuleContext {
 
 export class BackgroundContext extends ParserRuleContext {
 	public BACKGROUND(): TerminalNode { return this.getToken(GherkinParser.BACKGROUND, 0); }
-	public text(): TextContext {
-		return this.getRuleContext(0, TextContext);
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
 	}
-	public step(): StepContext[];
-	public step(i: number): StepContext;
-	public step(i?: number): StepContext | StepContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(StepContext);
-		} else {
-			return this.getRuleContext(i, StepContext);
-		}
+	public step(): StepContext {
+		return this.getRuleContext(0, StepContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -1230,23 +1245,11 @@ export class BackgroundContext extends ParserRuleContext {
 
 export class ScenarioContext extends ParserRuleContext {
 	public SCENARIO(): TerminalNode { return this.getToken(GherkinParser.SCENARIO, 0); }
-	public text(): TextContext {
-		return this.getRuleContext(0, TextContext);
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
 	}
-	public step(): StepContext[];
-	public step(i: number): StepContext;
-	public step(i?: number): StepContext | StepContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(StepContext);
-		} else {
-			return this.getRuleContext(i, StepContext);
-		}
-	}
-	public examplesBlock(): ExamplesBlockContext | undefined {
-		return this.tryGetRuleContext(0, ExamplesBlockContext);
-	}
-	public docString(): DocStringContext | undefined {
-		return this.tryGetRuleContext(0, DocStringContext);
+	public step(): StepContext {
+		return this.getRuleContext(0, StepContext);
 	}
 	public tags(): TagsContext | undefined {
 		return this.tryGetRuleContext(0, TagsContext);
@@ -1269,23 +1272,14 @@ export class ScenarioContext extends ParserRuleContext {
 
 export class ScenarioOutlineContext extends ParserRuleContext {
 	public SCENARIO_OUTLINE(): TerminalNode { return this.getToken(GherkinParser.SCENARIO_OUTLINE, 0); }
-	public text(): TextContext {
-		return this.getRuleContext(0, TextContext);
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
+	}
+	public step(): StepContext {
+		return this.getRuleContext(0, StepContext);
 	}
 	public examplesBlock(): ExamplesBlockContext {
 		return this.getRuleContext(0, ExamplesBlockContext);
-	}
-	public step(): StepContext[];
-	public step(i: number): StepContext;
-	public step(i?: number): StepContext | StepContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(StepContext);
-		} else {
-			return this.getRuleContext(i, StepContext);
-		}
-	}
-	public docString(): DocStringContext | undefined {
-		return this.tryGetRuleContext(0, DocStringContext);
 	}
 	public tags(): TagsContext | undefined {
 		return this.tryGetRuleContext(0, TagsContext);
@@ -1392,8 +1386,8 @@ export class TableRowContext extends ParserRuleContext {
 
 
 export class CellContext extends ParserRuleContext {
-	public text(): TextContext {
-		return this.getRuleContext(0, TextContext);
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -1412,20 +1406,50 @@ export class CellContext extends ParserRuleContext {
 
 
 export class StepContext extends ParserRuleContext {
-	public givenStep(): GivenStepContext | undefined {
-		return this.tryGetRuleContext(0, GivenStepContext);
+	public givenStep(): GivenStepContext {
+		return this.getRuleContext(0, GivenStepContext);
 	}
-	public whenStep(): WhenStepContext | undefined {
-		return this.tryGetRuleContext(0, WhenStepContext);
+	public whenStep(): WhenStepContext {
+		return this.getRuleContext(0, WhenStepContext);
 	}
-	public thenStep(): ThenStepContext | undefined {
-		return this.tryGetRuleContext(0, ThenStepContext);
+	public thenStep(): ThenStepContext {
+		return this.getRuleContext(0, ThenStepContext);
 	}
-	public andStep(): AndStepContext | undefined {
-		return this.tryGetRuleContext(0, AndStepContext);
+	public andGivenStep(): AndGivenStepContext[];
+	public andGivenStep(i: number): AndGivenStepContext;
+	public andGivenStep(i?: number): AndGivenStepContext | AndGivenStepContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(AndGivenStepContext);
+		} else {
+			return this.getRuleContext(i, AndGivenStepContext);
+		}
 	}
-	public butStep(): ButStepContext | undefined {
-		return this.tryGetRuleContext(0, ButStepContext);
+	public andWhenStep(): AndWhenStepContext[];
+	public andWhenStep(i: number): AndWhenStepContext;
+	public andWhenStep(i?: number): AndWhenStepContext | AndWhenStepContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(AndWhenStepContext);
+		} else {
+			return this.getRuleContext(i, AndWhenStepContext);
+		}
+	}
+	public andStep(): AndStepContext[];
+	public andStep(i: number): AndStepContext;
+	public andStep(i?: number): AndStepContext | AndStepContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(AndStepContext);
+		} else {
+			return this.getRuleContext(i, AndStepContext);
+		}
+	}
+	public butStep(): ButStepContext[];
+	public butStep(i: number): ButStepContext;
+	public butStep(i?: number): ButStepContext | ButStepContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(ButStepContext);
+		} else {
+			return this.getRuleContext(i, ButStepContext);
+		}
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -1445,14 +1469,14 @@ export class StepContext extends ParserRuleContext {
 
 export class GivenStepContext extends ParserRuleContext {
 	public GIVEN(): TerminalNode { return this.getToken(GherkinParser.GIVEN, 0); }
-	public text(): TextContext {
-		return this.getRuleContext(0, TextContext);
-	}
-	public docString(): DocStringContext | undefined {
-		return this.tryGetRuleContext(0, DocStringContext);
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
 	}
 	public tags(): TagsContext | undefined {
 		return this.tryGetRuleContext(0, TagsContext);
+	}
+	public docString(): DocStringContext | undefined {
+		return this.tryGetRuleContext(0, DocStringContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -1470,16 +1494,43 @@ export class GivenStepContext extends ParserRuleContext {
 }
 
 
-export class WhenStepContext extends ParserRuleContext {
-	public WHEN(): TerminalNode { return this.getToken(GherkinParser.WHEN, 0); }
-	public text(): TextContext {
-		return this.getRuleContext(0, TextContext);
+export class AndGivenStepContext extends ParserRuleContext {
+	public AND_GIVEN(): TerminalNode { return this.getToken(GherkinParser.AND_GIVEN, 0); }
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
+	}
+	public tags(): TagsContext | undefined {
+		return this.tryGetRuleContext(0, TagsContext);
 	}
 	public docString(): DocStringContext | undefined {
 		return this.tryGetRuleContext(0, DocStringContext);
 	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return GherkinParser.RULE_andGivenStep; }
+	// @Override
+	public accept<Result>(visitor: GherkinParserVisitor<Result>): Result {
+		if (visitor.visitAndGivenStep) {
+			return visitor.visitAndGivenStep(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class WhenStepContext extends ParserRuleContext {
+	public WHEN(): TerminalNode { return this.getToken(GherkinParser.WHEN, 0); }
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
+	}
 	public tags(): TagsContext | undefined {
 		return this.tryGetRuleContext(0, TagsContext);
+	}
+	public docString(): DocStringContext | undefined {
+		return this.tryGetRuleContext(0, DocStringContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -1497,16 +1548,43 @@ export class WhenStepContext extends ParserRuleContext {
 }
 
 
-export class ThenStepContext extends ParserRuleContext {
-	public THEN(): TerminalNode { return this.getToken(GherkinParser.THEN, 0); }
-	public text(): TextContext {
-		return this.getRuleContext(0, TextContext);
+export class AndWhenStepContext extends ParserRuleContext {
+	public AND_WHEN(): TerminalNode { return this.getToken(GherkinParser.AND_WHEN, 0); }
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
+	}
+	public tags(): TagsContext | undefined {
+		return this.tryGetRuleContext(0, TagsContext);
 	}
 	public docString(): DocStringContext | undefined {
 		return this.tryGetRuleContext(0, DocStringContext);
 	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return GherkinParser.RULE_andWhenStep; }
+	// @Override
+	public accept<Result>(visitor: GherkinParserVisitor<Result>): Result {
+		if (visitor.visitAndWhenStep) {
+			return visitor.visitAndWhenStep(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class ThenStepContext extends ParserRuleContext {
+	public THEN(): TerminalNode { return this.getToken(GherkinParser.THEN, 0); }
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
+	}
 	public tags(): TagsContext | undefined {
 		return this.tryGetRuleContext(0, TagsContext);
+	}
+	public docString(): DocStringContext | undefined {
+		return this.tryGetRuleContext(0, DocStringContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -1526,14 +1604,14 @@ export class ThenStepContext extends ParserRuleContext {
 
 export class AndStepContext extends ParserRuleContext {
 	public AND(): TerminalNode { return this.getToken(GherkinParser.AND, 0); }
-	public text(): TextContext {
-		return this.getRuleContext(0, TextContext);
-	}
-	public docString(): DocStringContext | undefined {
-		return this.tryGetRuleContext(0, DocStringContext);
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
 	}
 	public tags(): TagsContext | undefined {
 		return this.tryGetRuleContext(0, TagsContext);
+	}
+	public docString(): DocStringContext | undefined {
+		return this.tryGetRuleContext(0, DocStringContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -1553,14 +1631,14 @@ export class AndStepContext extends ParserRuleContext {
 
 export class ButStepContext extends ParserRuleContext {
 	public BUT(): TerminalNode { return this.getToken(GherkinParser.BUT, 0); }
-	public text(): TextContext {
-		return this.getRuleContext(0, TextContext);
-	}
-	public docString(): DocStringContext | undefined {
-		return this.tryGetRuleContext(0, DocStringContext);
+	public contentText(): ContentTextContext {
+		return this.getRuleContext(0, ContentTextContext);
 	}
 	public tags(): TagsContext | undefined {
 		return this.tryGetRuleContext(0, TagsContext);
+	}
+	public docString(): DocStringContext | undefined {
+		return this.tryGetRuleContext(0, DocStringContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -1578,41 +1656,6 @@ export class ButStepContext extends ParserRuleContext {
 }
 
 
-export class DocStringContentsContext extends ParserRuleContext {
-	public ANGLE_BRACKET_WORD(): TerminalNode[];
-	public ANGLE_BRACKET_WORD(i: number): TerminalNode;
-	public ANGLE_BRACKET_WORD(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(GherkinParser.ANGLE_BRACKET_WORD);
-		} else {
-			return this.getToken(GherkinParser.ANGLE_BRACKET_WORD, i);
-		}
-	}
-	public DOC_STRING_TEXT(): TerminalNode[];
-	public DOC_STRING_TEXT(i: number): TerminalNode;
-	public DOC_STRING_TEXT(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(GherkinParser.DOC_STRING_TEXT);
-		} else {
-			return this.getToken(GherkinParser.DOC_STRING_TEXT, i);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return GherkinParser.RULE_docStringContents; }
-	// @Override
-	public accept<Result>(visitor: GherkinParserVisitor<Result>): Result {
-		if (visitor.visitDocStringContents) {
-			return visitor.visitDocStringContents(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
 export class DocStringContext extends ParserRuleContext {
 	public DOC_STRING_QUOT(): TerminalNode[];
 	public DOC_STRING_QUOT(i: number): TerminalNode;
@@ -1623,9 +1666,7 @@ export class DocStringContext extends ParserRuleContext {
 			return this.getToken(GherkinParser.DOC_STRING_QUOT, i);
 		}
 	}
-	public docStringContents(): DocStringContentsContext | undefined {
-		return this.tryGetRuleContext(0, DocStringContentsContext);
-	}
+	public DOC_STRING_TEXT(): TerminalNode | undefined { return this.tryGetToken(GherkinParser.DOC_STRING_TEXT, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
@@ -1635,24 +1676,6 @@ export class DocStringContext extends ParserRuleContext {
 	public accept<Result>(visitor: GherkinParserVisitor<Result>): Result {
 		if (visitor.visitDocString) {
 			return visitor.visitDocString(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class MarkdownContext extends ParserRuleContext {
-	public MARKDOWN(): TerminalNode { return this.getToken(GherkinParser.MARKDOWN, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return GherkinParser.RULE_markdown; }
-	// @Override
-	public accept<Result>(visitor: GherkinParserVisitor<Result>): Result {
-		if (visitor.visitMarkdown) {
-			return visitor.visitMarkdown(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -1686,7 +1709,7 @@ export class TagsContext extends ParserRuleContext {
 }
 
 
-export class TextContext extends ParserRuleContext {
+export class ContentTextContext extends ParserRuleContext {
 	public TEXT_CHARACTER(): TerminalNode[];
 	public TEXT_CHARACTER(i: number): TerminalNode;
 	public TEXT_CHARACTER(i?: number): TerminalNode | TerminalNode[] {
@@ -1696,51 +1719,15 @@ export class TextContext extends ParserRuleContext {
 			return this.getToken(GherkinParser.TEXT_CHARACTER, i);
 		}
 	}
-	public QUOTED_TEXT(): TerminalNode[];
-	public QUOTED_TEXT(i: number): TerminalNode;
-	public QUOTED_TEXT(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(GherkinParser.QUOTED_TEXT);
-		} else {
-			return this.getToken(GherkinParser.QUOTED_TEXT, i);
-		}
-	}
-	public ESCAPED_CHAR(): TerminalNode[];
-	public ESCAPED_CHAR(i: number): TerminalNode;
-	public ESCAPED_CHAR(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(GherkinParser.ESCAPED_CHAR);
-		} else {
-			return this.getToken(GherkinParser.ESCAPED_CHAR, i);
-		}
-	}
-	public ANGLE_BRACKET_PLACEHOLDER(): TerminalNode[];
-	public ANGLE_BRACKET_PLACEHOLDER(i: number): TerminalNode;
-	public ANGLE_BRACKET_PLACEHOLDER(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(GherkinParser.ANGLE_BRACKET_PLACEHOLDER);
-		} else {
-			return this.getToken(GherkinParser.ANGLE_BRACKET_PLACEHOLDER, i);
-		}
-	}
-	public markdown(): MarkdownContext[];
-	public markdown(i: number): MarkdownContext;
-	public markdown(i?: number): MarkdownContext | MarkdownContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(MarkdownContext);
-		} else {
-			return this.getRuleContext(i, MarkdownContext);
-		}
-	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return GherkinParser.RULE_text; }
+	public get ruleIndex(): number { return GherkinParser.RULE_contentText; }
 	// @Override
 	public accept<Result>(visitor: GherkinParserVisitor<Result>): Result {
-		if (visitor.visitText) {
-			return visitor.visitText(this);
+		if (visitor.visitContentText) {
+			return visitor.visitContentText(this);
 		} else {
 			return visitor.visitChildren(this);
 		}

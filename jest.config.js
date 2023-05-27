@@ -1,8 +1,6 @@
 module.exports = {
-    projects: ['<rootDir>/src'],
     testMatch: [
-        '**/__tests__/**/*.(ts|tsx)',
-        '**/?(*.)+(spec|test).(ts|tsx)',
+        '<rootDir>/test/runner.ts'
     ],
     transform: {
         '^.+\\.[tj]s$': ['ts-jest', {

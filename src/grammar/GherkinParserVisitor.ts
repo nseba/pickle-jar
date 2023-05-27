@@ -3,6 +3,7 @@
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
+import { FeatureFileContext } from "./GherkinParser";
 import { FeatureContext } from "./GherkinParser";
 import { BackgroundContext } from "./GherkinParser";
 import { ScenarioContext } from "./GherkinParser";
@@ -13,15 +14,15 @@ import { TableRowContext } from "./GherkinParser";
 import { CellContext } from "./GherkinParser";
 import { StepContext } from "./GherkinParser";
 import { GivenStepContext } from "./GherkinParser";
+import { AndGivenStepContext } from "./GherkinParser";
 import { WhenStepContext } from "./GherkinParser";
+import { AndWhenStepContext } from "./GherkinParser";
 import { ThenStepContext } from "./GherkinParser";
 import { AndStepContext } from "./GherkinParser";
 import { ButStepContext } from "./GherkinParser";
-import { DocStringContentsContext } from "./GherkinParser";
 import { DocStringContext } from "./GherkinParser";
-import { MarkdownContext } from "./GherkinParser";
 import { TagsContext } from "./GherkinParser";
-import { TextContext } from "./GherkinParser";
+import { ContentTextContext } from "./GherkinParser";
 
 
 /**
@@ -32,6 +33,13 @@ import { TextContext } from "./GherkinParser";
  * operations with no return type.
  */
 export interface GherkinParserVisitor<Result> extends ParseTreeVisitor<Result> {
+	/**
+	 * Visit a parse tree produced by `GherkinParser.featureFile`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFeatureFile?: (ctx: FeatureFileContext) => Result;
+
 	/**
 	 * Visit a parse tree produced by `GherkinParser.feature`.
 	 * @param ctx the parse tree
@@ -103,11 +111,25 @@ export interface GherkinParserVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitGivenStep?: (ctx: GivenStepContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `GherkinParser.andGivenStep`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAndGivenStep?: (ctx: AndGivenStepContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `GherkinParser.whenStep`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitWhenStep?: (ctx: WhenStepContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `GherkinParser.andWhenStep`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAndWhenStep?: (ctx: AndWhenStepContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `GherkinParser.thenStep`.
@@ -131,25 +153,11 @@ export interface GherkinParserVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitButStep?: (ctx: ButStepContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `GherkinParser.docStringContents`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitDocStringContents?: (ctx: DocStringContentsContext) => Result;
-
-	/**
 	 * Visit a parse tree produced by `GherkinParser.docString`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitDocString?: (ctx: DocStringContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `GherkinParser.markdown`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitMarkdown?: (ctx: MarkdownContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `GherkinParser.tags`.
@@ -159,10 +167,10 @@ export interface GherkinParserVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitTags?: (ctx: TagsContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `GherkinParser.text`.
+	 * Visit a parse tree produced by `GherkinParser.contentText`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitText?: (ctx: TextContext) => Result;
+	visitContentText?: (ctx: ContentTextContext) => Result;
 }
 

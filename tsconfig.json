@@ -38,5 +38,9 @@
     "dist",
     "docs",
     "coverage"
-  ]
+  ],
+  "references": [{
+    "path": "./src/grammar",
+    "composite": true
+  }]
 }

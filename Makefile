@@ -37,8 +37,7 @@ doc:
 	npx typedoc src/index.ts
 
 grammar:
-	npx antlr4ts -visitor -no-listener ./src/grammar/GherkinLexer.g4
-	npx antlr4ts -visitor -no-listener ./src/grammar/GherkinParser.g4
+	. ./grammar.sh
 
 all:
 	$(MAKE) clean
