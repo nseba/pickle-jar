@@ -33,9 +33,6 @@ test-watch:
 lint:
 	npx eslint '*/**/*.{js,ts,tsx}' --fix
 
-doc:
-	npx typedoc src/index.ts
-
 grammar:
 	. ./grammar.sh
 
@@ -44,4 +41,3 @@ all:
 	$(MAKE) build
 	$(MAKE) lint
 	$(MAKE) test
-	$(MAKE) doc

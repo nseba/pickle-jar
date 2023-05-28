@@ -99,8 +99,35 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         const {step: stepCall, match} = stepDefinition;
 
         const docStringContents = step.docString()?.DOC_STRING_TEXT()?.text;
+        const args = this.extractTestArgs(match, name, docStringContents, valueMap);
+
+        if (prepare) {
+            this.definePrepareStep(name, stepCall, args, steps, valueMap);
+        } else {
+            this.defineTestStep(name, stepCall, args, steps, valueMap);
+        }
+
+    }
+
+    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext)[], valueMap: Record<string, string> | undefined) {
+        it(name, () => {
+            stepCall(this.world, ...args);
+        })
+        this.runNextStep(steps, valueMap);
+    }
+
+    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext)[], valueMap: Record<string, string> | undefined) {
+        describe(name, () => {
+            beforeEach(() => {
+                stepCall(this.world, ...args);
+            });
+            this.runNextStep(steps, valueMap)
+        })
+    }
+
+    private extractTestArgs(match: RegExp, name: string, docStringContents: string | undefined, valueMap: Record<string, string> | undefined) {
         let args: string [] = [];
-        let matchResults = match.exec(name);
+        const matchResults = match.exec(name);
         if (matchResults) {
             args = matchResults.slice(1);
         }
@@ -110,21 +137,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
                 .map(line => line.trimStart()).join(EOL), valueMap)
             args.push(cleanedDocstring);
         }
-
-        if (prepare) {
-            describe(name, () => {
-                beforeEach(() => {
-                    stepCall(this.world, ...args);
-                });
-                this.runNextStep(steps, valueMap)
-            })
-        } else {
-            it(name, () => {
-                stepCall(this.world, ...args);
-            })
-            this.runNextStep(steps, valueMap);
-        }
-
+        return args;
     }
 
     private getMatchingStepDefinition(name: string) {
@@ -136,7 +149,6 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         } else if (matchingStepDefinitions.length > 1) {
             throw new Error(`Multiple step definition match '${name}':\n${matchingStepDefinitions.map(rule => rule.match.toString()).join("\n")}`);
         }
-        const stepDefinition = matchingStepDefinitions[0];
-        return stepDefinition;
+        return matchingStepDefinitions[0];
     }
 }

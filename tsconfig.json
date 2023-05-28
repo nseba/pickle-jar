@@ -7,7 +7,7 @@
     "sourceMap": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDir": ".",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -40,7 +40,8 @@
     "coverage"
   ],
   "references": [{
-    "path": "./src/grammar",
-    "composite": true
+    "path": "./src/grammar"
+  }, {
+    "path": "./tsconfig.spec.json"
   }]
 }
