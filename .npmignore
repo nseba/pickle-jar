@@ -1,0 +1,5 @@
+src
+test
+*.json
+*.js
+*.sh
