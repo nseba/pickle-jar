@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "src",
+    "declarationDir": "../dist/src"
+  },
+  "include": [],
+
+  "references": [
+    {
+      "path": "./grammar"
+    }
+  ]
+}

@@ -6,13 +6,13 @@ options {
 
 featureFile: feature*;
 
-feature: FEATURE contentText (background)? (scenario | scenarioOutline)*;
+feature: FEATURE contentText (background? | (scenario | scenarioOutline)*);
 
-background: BACKGROUND contentText step;
+background: (tags)? BACKGROUND contentText givenStep andGivenStep* (scenario | scenarioOutline)*;
 
-scenario: SCENARIO contentText step (tags)?;
+scenario: (tags)? SCENARIO contentText step;
 
-scenarioOutline: SCENARIO_OUTLINE contentText step examplesBlock (tags)?;
+scenarioOutline: (tags)? SCENARIO_OUTLINE contentText step examplesBlock;
 
 examplesBlock: EXAMPLES tableHeader tableRow+;
 
@@ -24,19 +24,19 @@ cell: contentText;
 
 step: givenStep andGivenStep* whenStep andWhenStep* thenStep andStep* butStep*;
 
-givenStep: GIVEN contentText (tags)? docString?;
+givenStep: (tags)? GIVEN contentText docString?;
 
-andGivenStep: AND_GIVEN contentText (tags)? docString?;
+andGivenStep: (tags)? AND_GIVEN contentText docString?;
 
-whenStep: WHEN contentText (tags)? docString?;
+whenStep: (tags)? WHEN contentText  docString?;
 
-andWhenStep: AND_WHEN contentText (tags)? docString?;
+andWhenStep: (tags)?AND_WHEN contentText docString?;
 
-thenStep: THEN contentText (tags)? docString?;
+thenStep: (tags)? THEN contentText docString?;
 
-andStep: AND contentText (tags)? docString?;
+andStep: (tags)? AND contentText docString?;
 
-butStep: BUT contentText (tags)? docString?;
+butStep: (tags)? BUT contentText docString?;
 
 docString: DOC_STRING_QUOT DOC_STRING_TEXT? DOC_STRING_QUOT;
 

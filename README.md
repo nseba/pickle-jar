@@ -137,6 +137,15 @@ testRunner<World>(`${__dirname}/features/**/*.feature`, stepDefinitions, world);
 Scenario outline steps are defined in the same way as normal scenario steps. The scenario outline is expanded into a test run for 
 each row of the examples. 
 
+## Tag filtering
+Tags can be used for filtering entire scenarios or scenario steps. Feature files can use tags using the `@tag`. The test runner can accept an optional predicate callback that can filter scenarios or steps based on the tags such as:
+
+```ts
+const tagFilter = (tags: string[])=> {
+    return tags.indexOf("@skip") === -1;
+}
+```
+
 ## Jest configuration
 Create a `jest.config.js` file in the project root (or update the existing one) to match the `runner.ts` file:
 ```js

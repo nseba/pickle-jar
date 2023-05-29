@@ -4,8 +4,10 @@ import {
     AndGivenStepContext,
     AndStepContext,
     AndWhenStepContext,
+    BackgroundContext,
     ButStepContext,
     FeatureContext,
+    FeatureFileContext,
     GivenStepContext,
     ScenarioContext,
     ScenarioOutlineContext,
@@ -15,10 +17,19 @@ import {
 import {GherkinParserVisitor} from "./grammar/GherkinParserVisitor";
 import {StepDefinition} from "./step-definition";
 
+type SubSteps = (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext | ScenarioContext | ScenarioOutlineContext);
+
 export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> implements GherkinParserVisitor<void> {
-    constructor(public readonly world: TWorld, public readonly stepDefinitions: StepDefinition<TWorld>[]) {
+    constructor(private readonly file: string, private readonly world: TWorld, private readonly stepDefinitions: StepDefinition<TWorld>[], private tagFilter: (tags: string[]) => boolean) {
         super();
     }
+
+    public visitFeatureFile(ctx: FeatureFileContext): void {
+        describe(this.file, () => {
+            this.visitChildren(ctx);
+        })
+    }
+
 
     public visitFeature(ctx: FeatureContext): void {
         describe(`Feature: ${ctx.contentText().text.trim()}`, () => {
@@ -27,19 +38,44 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
     }
 
     public visitScenario(ctx: ScenarioContext): void {
+        const tags = ctx.tags()?.TAG().map(tag => tag.text) ?? [];
+        if (!this.tagFilter(tags)) {
+            return;
+        }
         describe(`Scenario: ${ctx.contentText().text.trim()}`, () => {
             const step = ctx.step();
 
             const steps = [step.givenStep(), ...step.andGivenStep(), step.whenStep(), ...step.andWhenStep(), step.thenStep(), ...step.andStep(), ...step.butStep()];
 
-            this.runNextStep(steps);
+            this.runNextStep(steps, undefined);
         })
     }
 
+    public visitBackground(ctx: BackgroundContext): void {
+        const tags = ctx.tags()?.TAG().map(tag => tag.text) ?? [];
+        if (!this.tagFilter(tags)) {
+            return;
+        }
+
+        describe(`Background: ${ctx.contentText().text.trim()}`, () => {
+
+            const scenarios = [...ctx.scenario(), ...ctx.scenarioOutline()];
+            for (const scenario of scenarios) {
+                const steps = [ctx.givenStep(), ...ctx.andGivenStep(), scenario];
+
+                this.runNextStep(steps, undefined);
+            }
+        })
+    }
+
+
     public visitScenarioOutline(ctx: ScenarioOutlineContext): void {
+        const tags = ctx.tags()?.TAG().map(tag => tag.text) ?? [];
+        if (!this.tagFilter(tags)) {
+            return;
+        }
         const cellNames = ctx.examplesBlock().tableHeader().tableRow().cell().map(cell => cell.text.trim());
         const values = ctx.examplesBlock().tableRow().map(row => row.cell().map(cell => cell.text.trim()));
-
         const valueMap = values.map(row => {
             const item: Record<string, string> = {};
             for (let i = 0; i < row.length; ++i) {
@@ -48,7 +84,6 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             return item;
         })
         const scenarioName = ctx.contentText().text.trim();
-
         describe(`Scenario outline: ${scenarioName}`, () => {
             for (const row of valueMap) {
 
@@ -73,9 +108,21 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         });
     }
 
-    private runNextStep(steps: (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext)[], valueMap?: Record<string, string>) {
+    private runNextStep(steps: SubSteps[], valueMap: Record<string, string> | undefined) {
         const step = steps.shift();
         if (!step) {
+            return;
+        }
+        const tags = step.tags()?.TAG().map(tag => tag.text) ?? [];
+        if (!this.tagFilter(tags)) {
+            return;
+        }
+
+        if (step instanceof ScenarioContext) {
+            this.visitScenario(step);
+            return;
+        } else if (step instanceof ScenarioOutlineContext) {
+            this.visitScenarioOutline(step);
             return;
         }
 
@@ -109,14 +156,14 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
     }
 
-    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext)[], valueMap: Record<string, string> | undefined) {
+    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined) {
         it(name, () => {
             stepCall(this.world, ...args);
         })
         this.runNextStep(steps, valueMap);
     }
 
-    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext)[], valueMap: Record<string, string> | undefined) {
+    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined) {
         describe(name, () => {
             beforeEach(() => {
                 stepCall(this.world, ...args);
@@ -144,6 +191,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         const matchingStepDefinitions = this.stepDefinitions.filter(def => {
             return def.match.test(name);
         });
+
         if (!matchingStepDefinitions.length) {
             throw new Error(`Missing step definition '${name}'`);
         } else if (matchingStepDefinitions.length > 1) {

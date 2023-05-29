@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "test",
+    "composite": true,
+    "declaration": false,
+    "types": ["jest", "node"],
+    "declarationDir": "../dist/test"
+  },
+  "include": [],
+  "references": [{
+    "path": "../src/tsconfig.json"
+  }]
+}

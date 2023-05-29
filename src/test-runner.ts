@@ -8,7 +8,7 @@ import {GherkinLexer} from "./grammar/GherkinLexer";
 import {GherkinParser} from "./grammar/GherkinParser";
 import {StepDefinition} from "./step-definition";
 
-export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDefinition<TWorld>[], world: TWorld) {
+export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDefinition<TWorld>[], worldFactory: () => TWorld, tagFilter: (tags: string[])=> boolean = ()=> true) {
 
     const featureFiles = glob.sync(globPattern);
     for (const featureFile of featureFiles) {
@@ -16,6 +16,7 @@ export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDef
         const file = callSite?.getFileName() ?? "";
         const dir = path.dirname(file);
         const absoluteFeaturePath = path.resolve(dir, featureFile);
+        const relativeFeaturePath = path.relative(dir, absoluteFeaturePath);
 
         const featureText = fs.readFileSync(absoluteFeaturePath, "utf-8")
         const input = CharStreams.fromString(featureText);
@@ -26,7 +27,7 @@ export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDef
 
         const parsedFeatureFile = parser.featureFile();
 
-        const visitor = new FeatureFileVisitor<TWorld>(world, stepDefinitions);
+        const visitor = new FeatureFileVisitor<TWorld>(relativeFeaturePath, worldFactory(), stepDefinitions, tagFilter);
         parsedFeatureFile.accept(visitor);
     }
 
