@@ -40,6 +40,10 @@ export const thenSteps: StepDefinition<World>[] = [{
         expect(docstring).toBe(`${world['outline-name']} ${world['outline-param']}`)
     }
 }, {
+    match: /^Then it can also be used as a docstring with quotes$/, step: (world, docstring) => {
+        expect(docstring).toBe(`"${world['outline-name']} ${world['outline-param']}"`)
+    }
+}, {
     match:/^Then the value of the background counter is 2$/, step: (world)=> {
         expect(world['background-counter']).toBe(2);
     }

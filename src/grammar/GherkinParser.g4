@@ -38,7 +38,7 @@ andStep: (tags)? AND contentText docString?;
 
 butStep: (tags)? BUT contentText docString?;
 
-docString: DOC_STRING_QUOT DOC_STRING_TEXT? DOC_STRING_QUOT;
+docString: DOC_STRING;
 
 tags: TAG+;
 

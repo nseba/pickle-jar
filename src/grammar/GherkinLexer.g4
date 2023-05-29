@@ -22,12 +22,15 @@ WS: [\r\n]+ -> skip;
 WSS: [ \t\r\n]+ -> skip;
 
 
-DOC_STRING_QUOT: '"""' -> pushMode(DOC_STRING_MODE);
+//DOC_STRING_QUOT: '"""' -> pushMode(DOC_STRING_MODE);
+DOC_STRING: '"""' .*? '"""';
+
 
 mode TEXT_CHARACTER_MODE;
     TEXT_CHARACTER2: ~[\r\n"|]+ -> type(TEXT_CHARACTER), popMode;
 
-mode DOC_STRING_MODE;
-    DOC_STRING_TEXT: ~["]+;
-    DOC_STRING_WS: [ \t\r\n]+;
-    DOC_STRING_QUOT_2: '"""' -> type(DOC_STRING_QUOT), popMode;
+//mode DOC_STRING_MODE;
+//    STRING: '"' ( ~["\r\n] | '""' )* '"' -> type(TEXT_CHARACTER);
+//    QUOTED_STRING: '"""' .*? '"""' -> type(TEXT_CHARACTER);
+//    DOC_STRING_QUOT_2: '"""' -> type(DOC_STRING_QUOT), popMode;
+//    WS2: [ \t\r\n]+ -> skip;

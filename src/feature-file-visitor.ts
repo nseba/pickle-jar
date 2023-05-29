@@ -145,7 +145,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
         const {step: stepCall, match} = stepDefinition;
 
-        const docStringContents = step.docString()?.DOC_STRING_TEXT()?.text;
+        const docStringContents = step.docString()?.DOC_STRING().text;
         const args = this.extractTestArgs(match, name, docStringContents, valueMap);
 
         if (prepare) {
@@ -179,9 +179,12 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             args = matchResults.slice(1);
         }
         if (docStringContents) {
-            const cleanedDocstring = this.replaceKeywords(docStringContents.trim()
+            const cleanedDocstring = this.replaceKeywords(docStringContents
+                .trim()
+                .replace(/^"""/, "")
+                .replace(/"""$/, "")
                 .split(/((\r\n)|\r|\n)]/)
-                .map(line => line.trimStart()).join(EOL), valueMap)
+                .map(line => line.trim()).join(EOL), valueMap)
             args.push(cleanedDocstring);
         }
         return args;
