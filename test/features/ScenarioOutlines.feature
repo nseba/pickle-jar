@@ -28,3 +28,4 @@ Feature: Scenario outlines
       | name                  | parameter              |
       | scenario name         | parameter name         |
       | another scenario name | another parameter name |
+      | "quoted"              | another parameter name |

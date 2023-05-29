@@ -19,8 +19,12 @@ import {StepDefinition} from "./step-definition";
 
 type SubSteps = (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext | ScenarioContext | ScenarioOutlineContext);
 
+interface WorldObject<TWorld> {
+    world: TWorld
+}
+
 export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> implements GherkinParserVisitor<void> {
-    constructor(private readonly file: string, private readonly world: TWorld, private readonly stepDefinitions: StepDefinition<TWorld>[], private tagFilter: (tags: string[]) => boolean) {
+    constructor(private readonly file: string, private readonly worldFactory: () => TWorld, private readonly stepDefinitions: StepDefinition<TWorld>[], private tagFilter: (tags: string[]) => boolean) {
         super();
     }
 
@@ -37,17 +41,24 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         })
     }
 
-    public visitScenario(ctx: ScenarioContext): void {
+    public visitScenario(ctx: ScenarioContext, worldObject?: WorldObject<TWorld>): void {
         const tags = ctx.tags()?.TAG().map(tag => tag.text) ?? [];
         if (!this.tagFilter(tags)) {
             return;
         }
         describe(`Scenario: ${ctx.contentText().text.trim()}`, () => {
+            const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
+            beforeEach(() => {
+                if (!worldObject) {
+                    worldObj.world = this.worldFactory();
+                }
+            })
+
             const step = ctx.step();
 
             const steps = [step.givenStep(), ...step.andGivenStep(), step.whenStep(), ...step.andWhenStep(), step.thenStep(), ...step.andStep(), ...step.butStep()];
 
-            this.runNextStep(steps, undefined);
+            this.runNextStep(steps, undefined, worldObject ?? worldObj);
         })
     }
 
@@ -58,18 +69,22 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         }
 
         describe(`Background: ${ctx.contentText().text.trim()}`, () => {
+            const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
+            beforeEach(() => {
+                worldObj.world = this.worldFactory();
+            })
 
             const scenarios = [...ctx.scenario(), ...ctx.scenarioOutline()];
             for (const scenario of scenarios) {
                 const steps = [ctx.givenStep(), ...ctx.andGivenStep(), scenario];
 
-                this.runNextStep(steps, undefined);
+                this.runNextStep(steps, undefined, worldObj);
             }
         })
     }
 
 
-    public visitScenarioOutline(ctx: ScenarioOutlineContext): void {
+    public visitScenarioOutline(ctx: ScenarioOutlineContext, worldObject?: WorldObject<TWorld>): void {
         const tags = ctx.tags()?.TAG().map(tag => tag.text) ?? [];
         if (!this.tagFilter(tags)) {
             return;
@@ -85,13 +100,20 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         })
         const scenarioName = ctx.contentText().text.trim();
         describe(`Scenario outline: ${scenarioName}`, () => {
+            const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
+            beforeEach(() => {
+                if (!worldObject) {
+                    worldObj.world = this.worldFactory();
+                }
+            })
+
             for (const row of valueMap) {
 
                 const step = ctx.step();
 
                 const steps = [step.givenStep(), ...step.andGivenStep(), step.whenStep(), ...step.andWhenStep(), step.thenStep(), ...step.andStep(), ...step.butStep()];
 
-                this.runNextStep(steps, row);
+                this.runNextStep(steps, row, worldObject ?? worldObj);
 
             }
         })
@@ -104,11 +126,13 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
     private replaceKeywords(input: string, replacements: Record<string, string> | undefined): string {
         return input.replace(/<([^>]+)>/g, (match, keyword) => {
             const replacement = replacements?.[keyword];
-            return replacement !== undefined ? replacement : match;
+            return replacement !== undefined ? replacement.replace(/\$/g, "\\$") : match;
         });
     }
 
-    private runNextStep(steps: SubSteps[], valueMap: Record<string, string> | undefined) {
+    private runNextStep(steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: {
+        world: TWorld
+    }) {
         const step = steps.shift();
         if (!step) {
             return;
@@ -119,10 +143,10 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         }
 
         if (step instanceof ScenarioContext) {
-            this.visitScenario(step);
+            this.visitScenario(step, worldObject);
             return;
         } else if (step instanceof ScenarioOutlineContext) {
-            this.visitScenarioOutline(step);
+            this.visitScenarioOutline(step, worldObject);
             return;
         }
 
@@ -149,26 +173,28 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         const args = this.extractTestArgs(match, name, docStringContents, valueMap);
 
         if (prepare) {
-            this.definePrepareStep(name, stepCall, args, steps, valueMap);
+            this.definePrepareStep(name, stepCall, args, steps, valueMap, worldObject);
         } else {
-            this.defineTestStep(name, stepCall, args, steps, valueMap);
+            this.defineTestStep(name, stepCall, args, steps, valueMap, worldObject);
         }
 
     }
 
-    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined) {
+    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: {
+        world: TWorld
+    }) {
         it(name, () => {
-            stepCall(this.world, ...args);
+            stepCall(worldObject.world, ...args);
         })
-        this.runNextStep(steps, valueMap);
+        this.runNextStep(steps, valueMap, worldObject);
     }
 
-    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined) {
+    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>) {
         describe(name, () => {
             beforeEach(() => {
-                stepCall(this.world, ...args);
+                stepCall(worldObject.world, ...args);
             });
-            this.runNextStep(steps, valueMap)
+            this.runNextStep(steps, valueMap, worldObject)
         })
     }
 

@@ -27,7 +27,7 @@ export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDef
 
         const parsedFeatureFile = parser.featureFile();
 
-        const visitor = new FeatureFileVisitor<TWorld>(relativeFeaturePath, worldFactory(), stepDefinitions, tagFilter);
+        const visitor = new FeatureFileVisitor<TWorld>(relativeFeaturePath, worldFactory, stepDefinitions, tagFilter);
         parsedFeatureFile.accept(visitor);
     }
 

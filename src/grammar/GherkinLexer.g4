@@ -17,7 +17,7 @@ PIPE: '|';
 TAG: '@' [a-zA-Z0-9_]+;
 COMMENT: '#' ~[\r\n]* -> skip;
 
-TEXT_CHARACTER: ~[\r\n"|] -> pushMode(TEXT_CHARACTER_MODE);
+TEXT_CHARACTER: ~[\r\n|] -> pushMode(TEXT_CHARACTER_MODE);
 WS: [\r\n]+ -> skip;
 WSS: [ \t\r\n]+ -> skip;
 
@@ -27,7 +27,7 @@ DOC_STRING: '"""' .*? '"""';
 
 
 mode TEXT_CHARACTER_MODE;
-    TEXT_CHARACTER2: ~[\r\n"|]+ -> type(TEXT_CHARACTER), popMode;
+    TEXT_CHARACTER2: ~[\r\n|]+ -> type(TEXT_CHARACTER), popMode;
 
 //mode DOC_STRING_MODE;
 //    STRING: '"' ( ~["\r\n] | '""' )* '"' -> type(TEXT_CHARACTER);
