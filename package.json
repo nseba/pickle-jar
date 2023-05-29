@@ -1,9 +1,10 @@
 {
   "name": "pickle-jar",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "repository": "git@github0.com:nseba/pickle-jar.git",
+  "homepage": "https://github.com/nseba/pickle-jar",
   "author": "Sebastian Negomireanu",
   "license": "MIT",
   "files": [
