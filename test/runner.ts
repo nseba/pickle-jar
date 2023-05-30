@@ -3,8 +3,8 @@ import {testRunner} from "../src";
 import {steps} from "./steps";
 import {World} from "./world";
 
-const tagFilter = (tags: string[])=> {
-    return tags.indexOf("@skip") === -1;
+const tagFilter = (tags: string[]) => {
+    return true;
 }
 
 const createWorld = () => ({});

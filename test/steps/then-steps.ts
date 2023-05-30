@@ -47,4 +47,8 @@ export const thenSteps: StepDefinition<World>[] = [{
     match:/^Then the value of the background counter is 2$/, step: (world)=> {
         expect(world['background-counter']).toBe(2);
     }
+}, {
+    match: /^Then the test doesn't run$/, step: () => {
+        fail("It should not run");
+    }
 }];

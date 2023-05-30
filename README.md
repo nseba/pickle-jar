@@ -142,9 +142,13 @@ Tags can be used for filtering entire scenarios or scenario steps. Feature files
 
 ```ts
 const tagFilter = (tags: string[])=> {
-    return tags.indexOf("@skip") === -1;
+    return tags.indexOf("@ui") === -1;
 }
 ```
+There are two builtin tags: `@skip` and `@only` which are handled differently than normal tags:
+
+* `@skip` - when used, the step and sub-steps are completely skipped (they are handled as Jest `describe.only` or `it.only` calls)
+* `@only` - when used, only the steps and sub-steps are executed (they are handled as Jest `describe.only` or `it.only` calls)
 
 ## Jest configuration
 Create a `jest.config.js` file in the project root (or update the existing one) to match the `runner.ts` file:

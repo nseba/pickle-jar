@@ -46,7 +46,13 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         if (!this.tagFilter(tags)) {
             return;
         }
-        describe(`Scenario: ${ctx.contentText().text.trim()}`, () => {
+
+        const isOnly = !!ctx.tags()?.ONLY_TAG().length;
+        const isSkip = !!ctx.tags()?.SKIP_TAG().length;
+
+        const describeFunc = isOnly ? describe.only : isSkip ? describe.skip : describe;
+
+        describeFunc(`Scenario: ${ctx.contentText().text.trim()}`, () => {
             const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
             beforeEach(() => {
                 if (!worldObject) {
@@ -68,7 +74,12 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             return;
         }
 
-        describe(`Background: ${ctx.contentText().text.trim()}`, () => {
+        const isOnly = !!ctx.tags()?.ONLY_TAG().length;
+        const isSkip = !!ctx.tags()?.SKIP_TAG().length;
+
+        const describeFunc = isOnly ? describe.only : isSkip ? describe.skip : describe;
+
+        describeFunc(`Background: ${ctx.contentText().text.trim()}`, () => {
             const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
             beforeEach(() => {
                 worldObj.world = this.worldFactory();
@@ -89,6 +100,13 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         if (!this.tagFilter(tags)) {
             return;
         }
+
+        const isOnly = !!ctx.tags()?.ONLY_TAG().length;
+        const isSkip = !!ctx.tags()?.SKIP_TAG().length;
+
+        const describeFunc = isOnly ? describe.only : isSkip ? describe.skip : describe;
+
+
         const cellNames = ctx.examplesBlock().tableHeader().tableRow().cell().map(cell => cell.text.trim());
         const values = ctx.examplesBlock().tableRow().map(row => row.cell().map(cell => cell.text.trim()));
         const valueMap = values.map(row => {
@@ -99,7 +117,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             return item;
         })
         const scenarioName = ctx.contentText().text.trim();
-        describe(`Scenario outline: ${scenarioName}`, () => {
+        describeFunc(`Scenario outline: ${scenarioName}`, () => {
             const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
             beforeEach(() => {
                 if (!worldObject) {
@@ -142,6 +160,9 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             return;
         }
 
+        const isOnly = !!step.tags()?.ONLY_TAG().length;
+        const isSkip = !!step.tags()?.SKIP_TAG().length;
+
         if (step instanceof ScenarioContext) {
             this.visitScenario(step, worldObject);
             return;
@@ -172,25 +193,28 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         const docStringContents = step.docString()?.DOC_STRING().text;
         const args = this.extractTestArgs(match, name, docStringContents, valueMap);
 
+
         if (prepare) {
-            this.definePrepareStep(name, stepCall, args, steps, valueMap, worldObject);
+            this.definePrepareStep(name, stepCall, args, steps, valueMap, worldObject, isSkip, isOnly);
         } else {
-            this.defineTestStep(name, stepCall, args, steps, valueMap, worldObject);
+            this.defineTestStep(name, stepCall, args, steps, valueMap, worldObject, isSkip, isOnly);
         }
 
     }
 
-    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: {
-        world: TWorld
-    }) {
-        it(name, () => {
+    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, isSkip: boolean, isOnly: boolean) {
+        const itFunc = isOnly ? it.only : isSkip ? it.skip : it;
+
+        itFunc(name, () => {
             stepCall(worldObject.world, ...args);
         })
         this.runNextStep(steps, valueMap, worldObject);
     }
 
-    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>) {
-        describe(name, () => {
+    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, isSkip: boolean, isOnly: boolean) {
+        const describeFunc = isOnly ? describe.only : isSkip ? describe.skip : describe;
+
+        describeFunc(name, () => {
             beforeEach(() => {
                 stepCall(worldObject.world, ...args);
             });

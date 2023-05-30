@@ -14,6 +14,8 @@ EXAMPLES: 'Examples:' | 'EXAMPLES';
 BACKGROUND: 'Background:' | 'BACKGROUND';
 
 PIPE: '|';
+ONLY_TAG: '@only';
+SKIP_TAG: '@skip';
 TAG: '@' [a-zA-Z0-9_]+;
 COMMENT: '#' ~[\r\n]* -> skip;
 

@@ -37,4 +37,8 @@ export const givenSteps: StepDefinition<World>[] = [{
     match:/^Given a background counter$/, step: ()=> {
         /* nop */
     }
+}, {
+    match:/^Given a scenario with skip tag$/, step: ()=> {
+        fail("It should not run");
+    }
 }];

@@ -17,4 +17,8 @@ export const whenSteps: StepDefinition<World>[] = [{
     match:/^When the background counter is incremented$/, step: (world)=> {
         world['background-counter'] = world['background-counter'] as number + 1;
     }
+}, {
+    match: /^When a tagged scenario that excludes the skip tag$/, step: () => {
+        fail("It should not run");
+    }
 }]

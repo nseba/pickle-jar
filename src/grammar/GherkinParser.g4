@@ -40,6 +40,6 @@ butStep: (tags)? BUT contentText docString?;
 
 docString: DOC_STRING;
 
-tags: TAG+;
+tags: (ONLY_TAG | SKIP_TAG | TAG)+;
 
 contentText: TEXT_CHARACTER+;
