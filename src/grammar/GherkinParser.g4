@@ -6,7 +6,7 @@ options {
 
 featureFile: feature*;
 
-feature: FEATURE contentText (background? | (scenario | scenarioOutline)*);
+feature: (tags)? FEATURE contentText (background? | (scenario | scenarioOutline)*);
 
 background: (tags)? BACKGROUND contentText givenStep andGivenStep* (scenario | scenarioOutline)*;
 

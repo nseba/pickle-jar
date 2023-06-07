@@ -36,7 +36,17 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
 
     public visitFeature(ctx: FeatureContext): void {
-        describe(`Feature: ${ctx.contentText().text.trim()}`, () => {
+        const tags = ctx.tags()?.TAG().map(tag => tag.text) ?? [];
+        if (!this.tagFilter(tags)) {
+            return;
+        }
+
+        const isOnly = !!ctx.tags()?.ONLY_TAG().length;
+        const isSkip = !!ctx.tags()?.SKIP_TAG().length;
+
+        const describeFunc = isOnly ? describe.only : isSkip ? describe.skip : describe;
+
+        describeFunc(`Feature: ${ctx.contentText().text.trim()}`, () => {
             this.visitChildren(ctx);
         })
     }

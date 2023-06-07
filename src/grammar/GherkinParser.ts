@@ -125,7 +125,7 @@ export class GherkinParser extends Parser {
 			this.state = 43;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while (_la === GherkinParser.FEATURE) {
+			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.FEATURE) | (1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
 				{
 				this.state = 40;
@@ -158,58 +158,71 @@ export class GherkinParser extends Parser {
 		this.enterRule(_localctx, 2, GherkinParser.RULE_feature);
 		let _la: number;
 		try {
+			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 46;
-			this.match(GherkinParser.FEATURE);
 			this.state = 47;
-			this.contentText();
-			this.state = 58;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 4, this._ctx) ) {
+			_la = this._input.LA(1);
+			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
+				{
+				this.state = 46;
+				this.tags();
+				}
+			}
+
+			this.state = 49;
+			this.match(GherkinParser.FEATURE);
+			this.state = 50;
+			this.contentText();
+			this.state = 61;
+			this._errHandler.sync(this);
+			switch ( this.interpreter.adaptivePredict(this._input, 5, this._ctx) ) {
 			case 1:
 				{
-				this.state = 49;
+				this.state = 52;
 				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.BACKGROUND) | (1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
+				switch ( this.interpreter.adaptivePredict(this._input, 2, this._ctx) ) {
+				case 1:
 					{
-					this.state = 48;
+					this.state = 51;
 					this.background();
 					}
+					break;
 				}
-
 				}
 				break;
 
 			case 2:
 				{
-				this.state = 55;
+				this.state = 58;
 				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.SCENARIO) | (1 << GherkinParser.SCENARIO_OUTLINE) | (1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
-					{
-					this.state = 53;
-					this._errHandler.sync(this);
-					switch ( this.interpreter.adaptivePredict(this._input, 2, this._ctx) ) {
-					case 1:
+				_alt = this.interpreter.adaptivePredict(this._input, 4, this._ctx);
+				while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+					if (_alt === 1) {
 						{
-						this.state = 51;
-						this.scenario();
-						}
-						break;
+						this.state = 56;
+						this._errHandler.sync(this);
+						switch ( this.interpreter.adaptivePredict(this._input, 3, this._ctx) ) {
+						case 1:
+							{
+							this.state = 54;
+							this.scenario();
+							}
+							break;
 
-					case 2:
-						{
-						this.state = 52;
-						this.scenarioOutline();
+						case 2:
+							{
+							this.state = 55;
+							this.scenarioOutline();
+							}
+							break;
 						}
-						break;
+						}
 					}
-					}
-					this.state = 57;
+					this.state = 60;
 					this._errHandler.sync(this);
-					_la = this._input.LA(1);
+					_alt = this.interpreter.adaptivePredict(this._input, 4, this._ctx);
 				}
 				}
 				break;
@@ -239,64 +252,66 @@ export class GherkinParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 61;
+			this.state = 64;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
-				this.state = 60;
+				this.state = 63;
 				this.tags();
 				}
 			}
 
-			this.state = 63;
+			this.state = 66;
 			this.match(GherkinParser.BACKGROUND);
-			this.state = 64;
+			this.state = 67;
 			this.contentText();
-			this.state = 65;
+			this.state = 68;
 			this.givenStep();
-			this.state = 69;
+			this.state = 72;
 			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 6, this._ctx);
+			_alt = this.interpreter.adaptivePredict(this._input, 7, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					{
 					{
-					this.state = 66;
+					this.state = 69;
 					this.andGivenStep();
 					}
 					}
 				}
-				this.state = 71;
-				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 6, this._ctx);
-			}
-			this.state = 76;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.SCENARIO) | (1 << GherkinParser.SCENARIO_OUTLINE) | (1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
-				{
 				this.state = 74;
 				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 7, this._ctx) ) {
-				case 1:
+				_alt = this.interpreter.adaptivePredict(this._input, 7, this._ctx);
+			}
+			this.state = 79;
+			this._errHandler.sync(this);
+			_alt = this.interpreter.adaptivePredict(this._input, 9, this._ctx);
+			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+				if (_alt === 1) {
 					{
-					this.state = 72;
-					this.scenario();
-					}
-					break;
+					this.state = 77;
+					this._errHandler.sync(this);
+					switch ( this.interpreter.adaptivePredict(this._input, 8, this._ctx) ) {
+					case 1:
+						{
+						this.state = 75;
+						this.scenario();
+						}
+						break;
 
-				case 2:
-					{
-					this.state = 73;
-					this.scenarioOutline();
+					case 2:
+						{
+						this.state = 76;
+						this.scenarioOutline();
+						}
+						break;
 					}
-					break;
+					}
 				}
-				}
-				this.state = 78;
+				this.state = 81;
 				this._errHandler.sync(this);
-				_la = this._input.LA(1);
+				_alt = this.interpreter.adaptivePredict(this._input, 9, this._ctx);
 			}
 			}
 		}
@@ -322,21 +337,21 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 80;
+			this.state = 83;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
-				this.state = 79;
+				this.state = 82;
 				this.tags();
 				}
 			}
 
-			this.state = 82;
+			this.state = 85;
 			this.match(GherkinParser.SCENARIO);
-			this.state = 83;
+			this.state = 86;
 			this.contentText();
-			this.state = 84;
+			this.state = 87;
 			this.step();
 			}
 		}
@@ -362,23 +377,23 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 87;
+			this.state = 90;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
-				this.state = 86;
+				this.state = 89;
 				this.tags();
 				}
 			}
 
-			this.state = 89;
-			this.match(GherkinParser.SCENARIO_OUTLINE);
-			this.state = 90;
-			this.contentText();
-			this.state = 91;
-			this.step();
 			this.state = 92;
+			this.match(GherkinParser.SCENARIO_OUTLINE);
+			this.state = 93;
+			this.contentText();
+			this.state = 94;
+			this.step();
+			this.state = 95;
 			this.examplesBlock();
 			}
 		}
@@ -404,21 +419,21 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 94;
-			this.match(GherkinParser.EXAMPLES);
-			this.state = 95;
-			this.tableHeader();
 			this.state = 97;
+			this.match(GherkinParser.EXAMPLES);
+			this.state = 98;
+			this.tableHeader();
+			this.state = 100;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			do {
 				{
 				{
-				this.state = 96;
+				this.state = 99;
 				this.tableRow();
 				}
 				}
-				this.state = 99;
+				this.state = 102;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			} while (_la === GherkinParser.PIPE);
@@ -445,7 +460,7 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 101;
+			this.state = 104;
 			this.tableRow();
 			}
 		}
@@ -472,53 +487,53 @@ export class GherkinParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 103;
+			this.state = 106;
 			this.match(GherkinParser.PIPE);
-			this.state = 105;
+			this.state = 108;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			do {
 				{
 				{
-				this.state = 104;
+				this.state = 107;
 				this.cell();
 				}
 				}
-				this.state = 107;
+				this.state = 110;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			} while (_la === GherkinParser.TEXT_CHARACTER);
-			this.state = 117;
+			this.state = 120;
 			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 14, this._ctx);
+			_alt = this.interpreter.adaptivePredict(this._input, 15, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					{
 					{
-					this.state = 109;
+					this.state = 112;
 					this.match(GherkinParser.PIPE);
-					this.state = 111;
+					this.state = 114;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 					do {
 						{
 						{
-						this.state = 110;
+						this.state = 113;
 						this.cell();
 						}
 						}
-						this.state = 113;
+						this.state = 116;
 						this._errHandler.sync(this);
 						_la = this._input.LA(1);
 					} while (_la === GherkinParser.TEXT_CHARACTER);
 					}
 					}
 				}
-				this.state = 119;
+				this.state = 122;
 				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 14, this._ctx);
+				_alt = this.interpreter.adaptivePredict(this._input, 15, this._ctx);
 			}
-			this.state = 120;
+			this.state = 123;
 			this.match(GherkinParser.PIPE);
 			}
 		}
@@ -543,7 +558,7 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 122;
+			this.state = 125;
 			this.contentText();
 			}
 		}
@@ -569,75 +584,75 @@ export class GherkinParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 124;
+			this.state = 127;
 			this.givenStep();
-			this.state = 128;
-			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 15, this._ctx);
-			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
-				if (_alt === 1) {
-					{
-					{
-					this.state = 125;
-					this.andGivenStep();
-					}
-					}
-				}
-				this.state = 130;
-				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 15, this._ctx);
-			}
 			this.state = 131;
-			this.whenStep();
-			this.state = 135;
 			this._errHandler.sync(this);
 			_alt = this.interpreter.adaptivePredict(this._input, 16, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					{
 					{
-					this.state = 132;
-					this.andWhenStep();
+					this.state = 128;
+					this.andGivenStep();
 					}
 					}
 				}
-				this.state = 137;
+				this.state = 133;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 16, this._ctx);
 			}
+			this.state = 134;
+			this.whenStep();
 			this.state = 138;
-			this.thenStep();
-			this.state = 142;
 			this._errHandler.sync(this);
 			_alt = this.interpreter.adaptivePredict(this._input, 17, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					{
 					{
-					this.state = 139;
-					this.andStep();
+					this.state = 135;
+					this.andWhenStep();
 					}
 					}
 				}
-				this.state = 144;
+				this.state = 140;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 17, this._ctx);
 			}
-			this.state = 148;
+			this.state = 141;
+			this.thenStep();
+			this.state = 145;
 			this._errHandler.sync(this);
 			_alt = this.interpreter.adaptivePredict(this._input, 18, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					{
 					{
-					this.state = 145;
+					this.state = 142;
+					this.andStep();
+					}
+					}
+				}
+				this.state = 147;
+				this._errHandler.sync(this);
+				_alt = this.interpreter.adaptivePredict(this._input, 18, this._ctx);
+			}
+			this.state = 151;
+			this._errHandler.sync(this);
+			_alt = this.interpreter.adaptivePredict(this._input, 19, this._ctx);
+			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+				if (_alt === 1) {
+					{
+					{
+					this.state = 148;
 					this.butStep();
 					}
 					}
 				}
-				this.state = 150;
+				this.state = 153;
 				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 18, this._ctx);
+				_alt = this.interpreter.adaptivePredict(this._input, 19, this._ctx);
 			}
 			}
 		}
@@ -663,26 +678,26 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 152;
+			this.state = 155;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
-				this.state = 151;
+				this.state = 154;
 				this.tags();
 				}
 			}
 
-			this.state = 154;
-			this.match(GherkinParser.GIVEN);
-			this.state = 155;
-			this.contentText();
 			this.state = 157;
+			this.match(GherkinParser.GIVEN);
+			this.state = 158;
+			this.contentText();
+			this.state = 160;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === GherkinParser.DOC_STRING) {
 				{
-				this.state = 156;
+				this.state = 159;
 				this.docString();
 				}
 			}
@@ -711,26 +726,26 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 160;
+			this.state = 163;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
-				this.state = 159;
+				this.state = 162;
 				this.tags();
 				}
 			}
 
-			this.state = 162;
-			this.match(GherkinParser.AND_GIVEN);
-			this.state = 163;
-			this.contentText();
 			this.state = 165;
+			this.match(GherkinParser.AND_GIVEN);
+			this.state = 166;
+			this.contentText();
+			this.state = 168;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === GherkinParser.DOC_STRING) {
 				{
-				this.state = 164;
+				this.state = 167;
 				this.docString();
 				}
 			}
@@ -759,26 +774,26 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 168;
+			this.state = 171;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
-				this.state = 167;
+				this.state = 170;
 				this.tags();
 				}
 			}
 
-			this.state = 170;
-			this.match(GherkinParser.WHEN);
-			this.state = 171;
-			this.contentText();
 			this.state = 173;
+			this.match(GherkinParser.WHEN);
+			this.state = 174;
+			this.contentText();
+			this.state = 176;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === GherkinParser.DOC_STRING) {
 				{
-				this.state = 172;
+				this.state = 175;
 				this.docString();
 				}
 			}
@@ -807,26 +822,26 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 176;
+			this.state = 179;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
-				this.state = 175;
+				this.state = 178;
 				this.tags();
 				}
 			}
 
-			this.state = 178;
-			this.match(GherkinParser.AND_WHEN);
-			this.state = 179;
-			this.contentText();
 			this.state = 181;
+			this.match(GherkinParser.AND_WHEN);
+			this.state = 182;
+			this.contentText();
+			this.state = 184;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === GherkinParser.DOC_STRING) {
 				{
-				this.state = 180;
+				this.state = 183;
 				this.docString();
 				}
 			}
@@ -855,26 +870,26 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 184;
+			this.state = 187;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
-				this.state = 183;
+				this.state = 186;
 				this.tags();
 				}
 			}
 
-			this.state = 186;
-			this.match(GherkinParser.THEN);
-			this.state = 187;
-			this.contentText();
 			this.state = 189;
+			this.match(GherkinParser.THEN);
+			this.state = 190;
+			this.contentText();
+			this.state = 192;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === GherkinParser.DOC_STRING) {
 				{
-				this.state = 188;
+				this.state = 191;
 				this.docString();
 				}
 			}
@@ -903,26 +918,26 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 192;
+			this.state = 195;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
-				this.state = 191;
+				this.state = 194;
 				this.tags();
 				}
 			}
 
-			this.state = 194;
-			this.match(GherkinParser.AND);
-			this.state = 195;
-			this.contentText();
 			this.state = 197;
+			this.match(GherkinParser.AND);
+			this.state = 198;
+			this.contentText();
+			this.state = 200;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === GherkinParser.DOC_STRING) {
 				{
-				this.state = 196;
+				this.state = 199;
 				this.docString();
 				}
 			}
@@ -951,26 +966,26 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 200;
+			this.state = 203;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0)) {
 				{
-				this.state = 199;
+				this.state = 202;
 				this.tags();
 				}
 			}
 
-			this.state = 202;
-			this.match(GherkinParser.BUT);
-			this.state = 203;
-			this.contentText();
 			this.state = 205;
+			this.match(GherkinParser.BUT);
+			this.state = 206;
+			this.contentText();
+			this.state = 208;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === GherkinParser.DOC_STRING) {
 				{
-				this.state = 204;
+				this.state = 207;
 				this.docString();
 				}
 			}
@@ -998,7 +1013,7 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 207;
+			this.state = 210;
 			this.match(GherkinParser.DOC_STRING);
 			}
 		}
@@ -1024,13 +1039,13 @@ export class GherkinParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 210;
+			this.state = 213;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			do {
 				{
 				{
-				this.state = 209;
+				this.state = 212;
 				_la = this._input.LA(1);
 				if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0))) {
 				this._errHandler.recoverInline(this);
@@ -1044,7 +1059,7 @@ export class GherkinParser extends Parser {
 				}
 				}
 				}
-				this.state = 212;
+				this.state = 215;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << GherkinParser.ONLY_TAG) | (1 << GherkinParser.SKIP_TAG) | (1 << GherkinParser.TAG))) !== 0));
@@ -1072,7 +1087,7 @@ export class GherkinParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 215;
+			this.state = 218;
 			this._errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -1080,7 +1095,7 @@ export class GherkinParser extends Parser {
 				case 1:
 					{
 					{
-					this.state = 214;
+					this.state = 217;
 					this.match(GherkinParser.TEXT_CHARACTER);
 					}
 					}
@@ -1088,9 +1103,9 @@ export class GherkinParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				this.state = 217;
+				this.state = 220;
 				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 34, this._ctx);
+				_alt = this.interpreter.adaptivePredict(this._input, 35, this._ctx);
 			} while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
 			}
 		}
@@ -1110,102 +1125,104 @@ export class GherkinParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x17\xDE\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x17\xE1\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
 		"\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04" +
 		"\x13\t\x13\x04\x14\t\x14\x04\x15\t\x15\x03\x02\x07\x02,\n\x02\f\x02\x0E" +
-		"\x02/\v\x02\x03\x03\x03\x03\x03\x03\x05\x034\n\x03\x03\x03\x03\x03\x07" +
-		"\x038\n\x03\f\x03\x0E\x03;\v\x03\x05\x03=\n\x03\x03\x04\x05\x04@\n\x04" +
-		"\x03\x04\x03\x04\x03\x04\x03\x04\x07\x04F\n\x04\f\x04\x0E\x04I\v\x04\x03" +
-		"\x04\x03\x04\x07\x04M\n\x04\f\x04\x0E\x04P\v\x04\x03\x05\x05\x05S\n\x05" +
-		"\x03\x05\x03\x05\x03\x05\x03\x05\x03\x06\x05\x06Z\n\x06\x03\x06\x03\x06" +
-		"\x03\x06\x03\x06\x03\x06\x03\x07\x03\x07\x03\x07\x06\x07d\n\x07\r\x07" +
-		"\x0E\x07e\x03\b\x03\b\x03\t\x03\t\x06\tl\n\t\r\t\x0E\tm\x03\t\x03\t\x06" +
-		"\tr\n\t\r\t\x0E\ts\x07\tv\n\t\f\t\x0E\ty\v\t\x03\t\x03\t\x03\n\x03\n\x03" +
-		"\v\x03\v\x07\v\x81\n\v\f\v\x0E\v\x84\v\v\x03\v\x03\v\x07\v\x88\n\v\f\v" +
-		"\x0E\v\x8B\v\v\x03\v\x03\v\x07\v\x8F\n\v\f\v\x0E\v\x92\v\v\x03\v\x07\v" +
-		"\x95\n\v\f\v\x0E\v\x98\v\v\x03\f\x05\f\x9B\n\f\x03\f\x03\f\x03\f\x05\f" +
-		"\xA0\n\f\x03\r\x05\r\xA3\n\r\x03\r\x03\r\x03\r\x05\r\xA8\n\r\x03\x0E\x05" +
-		"\x0E\xAB\n\x0E\x03\x0E\x03\x0E\x03\x0E\x05\x0E\xB0\n\x0E\x03\x0F\x05\x0F" +
-		"\xB3\n\x0F\x03\x0F\x03\x0F\x03\x0F\x05\x0F\xB8\n\x0F\x03\x10\x05\x10\xBB" +
-		"\n\x10\x03\x10\x03\x10\x03\x10\x05\x10\xC0\n\x10\x03\x11\x05\x11\xC3\n" +
-		"\x11\x03\x11\x03\x11\x03\x11\x05\x11\xC8\n\x11\x03\x12\x05\x12\xCB\n\x12" +
-		"\x03\x12\x03\x12\x03\x12\x05\x12\xD0\n\x12\x03\x13\x03\x13\x03\x14\x06" +
-		"\x14\xD5\n\x14\r\x14\x0E\x14\xD6\x03\x15\x06\x15\xDA\n\x15\r\x15\x0E\x15" +
-		"\xDB\x03\x15\x02\x02\x02\x16\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02" +
-		"\x0E\x02\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x1E\x02" +
-		" \x02\"\x02$\x02&\x02(\x02\x02\x03\x03\x02\x10\x12\x02\xEC\x02-\x03\x02" +
-		"\x02\x02\x040\x03\x02\x02\x02\x06?\x03\x02\x02\x02\bR\x03\x02\x02\x02" +
-		"\nY\x03\x02\x02\x02\f`\x03\x02\x02\x02\x0Eg\x03\x02\x02\x02\x10i\x03\x02" +
-		"\x02\x02\x12|\x03\x02\x02\x02\x14~\x03\x02\x02\x02\x16\x9A\x03\x02\x02" +
-		"\x02\x18\xA2\x03\x02\x02\x02\x1A\xAA\x03\x02\x02\x02\x1C\xB2\x03\x02\x02" +
-		"\x02\x1E\xBA\x03\x02\x02\x02 \xC2\x03\x02\x02\x02\"\xCA\x03\x02\x02\x02" +
-		"$\xD1\x03\x02\x02\x02&\xD4\x03\x02\x02\x02(\xD9\x03\x02\x02\x02*,\x05" +
-		"\x04\x03\x02+*\x03\x02\x02\x02,/\x03\x02\x02\x02-+\x03\x02\x02\x02-.\x03" +
-		"\x02\x02\x02.\x03\x03\x02\x02\x02/-\x03\x02\x02\x0201\x07\x03\x02\x02" +
-		"1<\x05(\x15\x0224\x05\x06\x04\x0232\x03\x02\x02\x0234\x03\x02\x02\x02" +
-		"4=\x03\x02\x02\x0258\x05\b\x05\x0268\x05\n\x06\x0275\x03\x02\x02\x027" +
-		"6\x03\x02\x02\x028;\x03\x02\x02\x0297\x03\x02\x02\x029:\x03\x02\x02\x02" +
-		":=\x03\x02\x02\x02;9\x03\x02\x02\x02<3\x03\x02\x02\x02<9\x03\x02\x02\x02" +
-		"=\x05\x03\x02\x02\x02>@\x05&\x14\x02?>\x03\x02\x02\x02?@\x03\x02\x02\x02" +
-		"@A\x03\x02\x02\x02AB\x07\x0E\x02\x02BC\x05(\x15\x02CG\x05\x16\f\x02DF" +
-		"\x05\x18\r\x02ED\x03\x02\x02\x02FI\x03\x02\x02\x02GE\x03\x02\x02\x02G" +
-		"H\x03\x02\x02\x02HN\x03\x02\x02\x02IG\x03\x02\x02\x02JM\x05\b\x05\x02" +
-		"KM\x05\n\x06\x02LJ\x03\x02\x02\x02LK\x03\x02\x02\x02MP\x03\x02\x02\x02" +
-		"NL\x03\x02\x02\x02NO\x03\x02\x02\x02O\x07\x03\x02\x02\x02PN\x03\x02\x02" +
-		"\x02QS\x05&\x14\x02RQ\x03\x02\x02\x02RS\x03\x02\x02\x02ST\x03\x02\x02" +
-		"\x02TU\x07\x04\x02\x02UV\x05(\x15\x02VW\x05\x14\v\x02W\t\x03\x02\x02\x02" +
-		"XZ\x05&\x14\x02YX\x03\x02\x02\x02YZ\x03\x02\x02\x02Z[\x03\x02\x02\x02" +
-		"[\\\x07\x05\x02\x02\\]\x05(\x15\x02]^\x05\x14\v\x02^_\x05\f\x07\x02_\v" +
-		"\x03\x02\x02\x02`a\x07\r\x02\x02ac\x05\x0E\b\x02bd\x05\x10\t\x02cb\x03" +
-		"\x02\x02\x02de\x03\x02\x02\x02ec\x03\x02\x02\x02ef\x03\x02\x02\x02f\r" +
-		"\x03\x02\x02\x02gh\x05\x10\t\x02h\x0F\x03\x02\x02\x02ik\x07\x0F\x02\x02" +
-		"jl\x05\x12\n\x02kj\x03\x02\x02\x02lm\x03\x02\x02\x02mk\x03\x02\x02\x02" +
-		"mn\x03\x02\x02\x02nw\x03\x02\x02\x02oq\x07\x0F\x02\x02pr\x05\x12\n\x02" +
-		"qp\x03\x02\x02\x02rs\x03\x02\x02\x02sq\x03\x02\x02\x02st\x03\x02\x02\x02" +
-		"tv\x03\x02\x02\x02uo\x03\x02\x02\x02vy\x03\x02\x02\x02wu\x03\x02\x02\x02" +
-		"wx\x03\x02\x02\x02xz\x03\x02\x02\x02yw\x03\x02\x02\x02z{\x07\x0F\x02\x02" +
-		"{\x11\x03\x02\x02\x02|}\x05(\x15\x02}\x13\x03\x02\x02\x02~\x82\x05\x16" +
-		"\f\x02\x7F\x81\x05\x18\r\x02\x80\x7F\x03\x02\x02\x02\x81\x84\x03\x02\x02" +
-		"\x02\x82\x80\x03\x02\x02\x02\x82\x83\x03\x02\x02\x02\x83\x85\x03\x02\x02" +
-		"\x02\x84\x82\x03\x02\x02\x02\x85\x89\x05\x1A\x0E\x02\x86\x88\x05\x1C\x0F" +
-		"\x02\x87\x86\x03\x02\x02\x02\x88\x8B\x03\x02\x02\x02\x89\x87\x03\x02\x02" +
-		"\x02\x89\x8A\x03\x02\x02\x02\x8A\x8C\x03\x02\x02\x02\x8B\x89\x03\x02\x02" +
-		"\x02\x8C\x90\x05\x1E\x10\x02\x8D\x8F\x05 \x11\x02\x8E\x8D\x03\x02\x02" +
-		"\x02\x8F\x92\x03\x02\x02\x02\x90\x8E\x03\x02\x02\x02\x90\x91\x03\x02\x02" +
-		"\x02\x91\x96\x03\x02\x02\x02\x92\x90\x03\x02\x02\x02\x93\x95\x05\"\x12" +
-		"\x02\x94\x93\x03\x02\x02\x02\x95\x98\x03\x02\x02\x02\x96\x94\x03\x02\x02" +
-		"\x02\x96\x97\x03\x02\x02\x02\x97\x15\x03\x02\x02\x02\x98\x96\x03\x02\x02" +
-		"\x02\x99\x9B\x05&\x14\x02\x9A\x99\x03\x02\x02\x02\x9A\x9B\x03\x02\x02" +
-		"\x02\x9B\x9C\x03\x02\x02\x02\x9C\x9D\x07\x06\x02\x02\x9D\x9F\x05(\x15" +
-		"\x02\x9E\xA0\x05$\x13\x02\x9F\x9E\x03\x02\x02\x02\x9F\xA0\x03\x02\x02" +
-		"\x02\xA0\x17\x03\x02\x02\x02\xA1\xA3\x05&\x14\x02\xA2\xA1\x03\x02\x02" +
-		"\x02\xA2\xA3\x03\x02\x02\x02\xA3\xA4\x03\x02\x02\x02\xA4\xA5\x07\x07\x02" +
-		"\x02\xA5\xA7\x05(\x15\x02\xA6\xA8\x05$\x13\x02\xA7\xA6\x03\x02\x02\x02" +
-		"\xA7\xA8\x03\x02\x02\x02\xA8\x19\x03\x02\x02\x02\xA9\xAB\x05&\x14\x02" +
-		"\xAA\xA9\x03\x02\x02\x02\xAA\xAB\x03\x02\x02\x02\xAB\xAC\x03\x02\x02\x02" +
-		"\xAC\xAD\x07\b\x02\x02\xAD\xAF\x05(\x15\x02\xAE\xB0\x05$\x13\x02\xAF\xAE" +
-		"\x03\x02\x02\x02\xAF\xB0\x03\x02\x02\x02\xB0\x1B\x03\x02\x02\x02\xB1\xB3" +
-		"\x05&\x14\x02\xB2\xB1\x03\x02\x02\x02\xB2\xB3\x03\x02\x02\x02\xB3\xB4" +
-		"\x03\x02\x02\x02\xB4\xB5\x07\t\x02\x02\xB5\xB7\x05(\x15\x02\xB6\xB8\x05" +
-		"$\x13\x02\xB7\xB6\x03\x02\x02\x02\xB7\xB8\x03\x02\x02\x02\xB8\x1D\x03" +
-		"\x02\x02\x02\xB9\xBB\x05&\x14\x02\xBA\xB9\x03\x02\x02\x02\xBA\xBB\x03" +
-		"\x02\x02\x02\xBB\xBC\x03\x02\x02\x02\xBC\xBD\x07\n\x02\x02\xBD\xBF\x05" +
-		"(\x15\x02\xBE\xC0\x05$\x13\x02\xBF\xBE\x03\x02\x02\x02\xBF\xC0\x03\x02" +
-		"\x02\x02\xC0\x1F\x03\x02\x02\x02\xC1\xC3\x05&\x14\x02\xC2\xC1\x03\x02" +
-		"\x02\x02\xC2\xC3\x03\x02\x02\x02\xC3\xC4\x03\x02\x02\x02\xC4\xC5\x07\v" +
-		"\x02\x02\xC5\xC7\x05(\x15\x02\xC6\xC8\x05$\x13\x02\xC7\xC6\x03\x02\x02" +
-		"\x02\xC7\xC8\x03\x02\x02\x02\xC8!\x03\x02\x02\x02\xC9\xCB\x05&\x14\x02" +
-		"\xCA\xC9\x03\x02\x02\x02\xCA\xCB\x03\x02\x02\x02\xCB\xCC\x03\x02\x02\x02" +
-		"\xCC\xCD\x07\f\x02\x02\xCD\xCF\x05(\x15\x02\xCE\xD0\x05$\x13\x02\xCF\xCE" +
-		"\x03\x02\x02\x02\xCF\xD0\x03\x02\x02\x02\xD0#\x03\x02\x02\x02\xD1\xD2" +
-		"\x07\x17\x02\x02\xD2%\x03\x02\x02\x02\xD3\xD5\t\x02\x02\x02\xD4\xD3\x03" +
-		"\x02\x02\x02\xD5\xD6\x03\x02\x02\x02\xD6\xD4\x03\x02\x02\x02\xD6\xD7\x03" +
-		"\x02\x02\x02\xD7\'\x03\x02\x02\x02\xD8\xDA\x07\x14\x02\x02\xD9\xD8\x03" +
-		"\x02\x02\x02\xDA\xDB\x03\x02\x02\x02\xDB\xD9\x03\x02\x02\x02\xDB\xDC\x03" +
-		"\x02\x02\x02\xDC)\x03\x02\x02\x02%-379<?GLNRYemsw\x82\x89\x90\x96\x9A" +
-		"\x9F\xA2\xA7\xAA\xAF\xB2\xB7\xBA\xBF\xC2\xC7\xCA\xCF\xD6\xDB";
+		"\x02/\v\x02\x03\x03\x05\x032\n\x03\x03\x03\x03\x03\x03\x03\x05\x037\n" +
+		"\x03\x03\x03\x03\x03\x07\x03;\n\x03\f\x03\x0E\x03>\v\x03\x05\x03@\n\x03" +
+		"\x03\x04\x05\x04C\n\x04\x03\x04\x03\x04\x03\x04\x03\x04\x07\x04I\n\x04" +
+		"\f\x04\x0E\x04L\v\x04\x03\x04\x03\x04\x07\x04P\n\x04\f\x04\x0E\x04S\v" +
+		"\x04\x03\x05\x05\x05V\n\x05\x03\x05\x03\x05\x03\x05\x03\x05\x03\x06\x05" +
+		"\x06]\n\x06\x03\x06\x03\x06\x03\x06\x03\x06\x03\x06\x03\x07\x03\x07\x03" +
+		"\x07\x06\x07g\n\x07\r\x07\x0E\x07h\x03\b\x03\b\x03\t\x03\t\x06\to\n\t" +
+		"\r\t\x0E\tp\x03\t\x03\t\x06\tu\n\t\r\t\x0E\tv\x07\ty\n\t\f\t\x0E\t|\v" +
+		"\t\x03\t\x03\t\x03\n\x03\n\x03\v\x03\v\x07\v\x84\n\v\f\v\x0E\v\x87\v\v" +
+		"\x03\v\x03\v\x07\v\x8B\n\v\f\v\x0E\v\x8E\v\v\x03\v\x03\v\x07\v\x92\n\v" +
+		"\f\v\x0E\v\x95\v\v\x03\v\x07\v\x98\n\v\f\v\x0E\v\x9B\v\v\x03\f\x05\f\x9E" +
+		"\n\f\x03\f\x03\f\x03\f\x05\f\xA3\n\f\x03\r\x05\r\xA6\n\r\x03\r\x03\r\x03" +
+		"\r\x05\r\xAB\n\r\x03\x0E\x05\x0E\xAE\n\x0E\x03\x0E\x03\x0E\x03\x0E\x05" +
+		"\x0E\xB3\n\x0E\x03\x0F\x05\x0F\xB6\n\x0F\x03\x0F\x03\x0F\x03\x0F\x05\x0F" +
+		"\xBB\n\x0F\x03\x10\x05\x10\xBE\n\x10\x03\x10\x03\x10\x03\x10\x05\x10\xC3" +
+		"\n\x10\x03\x11\x05\x11\xC6\n\x11\x03\x11\x03\x11\x03\x11\x05\x11\xCB\n" +
+		"\x11\x03\x12\x05\x12\xCE\n\x12\x03\x12\x03\x12\x03\x12\x05\x12\xD3\n\x12" +
+		"\x03\x13\x03\x13\x03\x14\x06\x14\xD8\n\x14\r\x14\x0E\x14\xD9\x03\x15\x06" +
+		"\x15\xDD\n\x15\r\x15\x0E\x15\xDE\x03\x15\x02\x02\x02\x16\x02\x02\x04\x02" +
+		"\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02\x16\x02\x18" +
+		"\x02\x1A\x02\x1C\x02\x1E\x02 \x02\"\x02$\x02&\x02(\x02\x02\x03\x03\x02" +
+		"\x10\x12\x02\xF0\x02-\x03\x02\x02\x02\x041\x03\x02\x02\x02\x06B\x03\x02" +
+		"\x02\x02\bU\x03\x02\x02\x02\n\\\x03\x02\x02\x02\fc\x03\x02\x02\x02\x0E" +
+		"j\x03\x02\x02\x02\x10l\x03\x02\x02\x02\x12\x7F\x03\x02\x02\x02\x14\x81" +
+		"\x03\x02\x02\x02\x16\x9D\x03\x02\x02\x02\x18\xA5\x03\x02\x02\x02\x1A\xAD" +
+		"\x03\x02\x02\x02\x1C\xB5\x03\x02\x02\x02\x1E\xBD\x03\x02\x02\x02 \xC5" +
+		"\x03\x02\x02\x02\"\xCD\x03\x02\x02\x02$\xD4\x03\x02\x02\x02&\xD7\x03\x02" +
+		"\x02\x02(\xDC\x03\x02\x02\x02*,\x05\x04\x03\x02+*\x03\x02\x02\x02,/\x03" +
+		"\x02\x02\x02-+\x03\x02\x02\x02-.\x03\x02\x02\x02.\x03\x03\x02\x02\x02" +
+		"/-\x03\x02\x02\x0202\x05&\x14\x0210\x03\x02\x02\x0212\x03\x02\x02\x02" +
+		"23\x03\x02\x02\x0234\x07\x03\x02\x024?\x05(\x15\x0257\x05\x06\x04\x02" +
+		"65\x03\x02\x02\x0267\x03\x02\x02\x027@\x03\x02\x02\x028;\x05\b\x05\x02" +
+		"9;\x05\n\x06\x02:8\x03\x02\x02\x02:9\x03\x02\x02\x02;>\x03\x02\x02\x02" +
+		"<:\x03\x02\x02\x02<=\x03\x02\x02\x02=@\x03\x02\x02\x02><\x03\x02\x02\x02" +
+		"?6\x03\x02\x02\x02?<\x03\x02\x02\x02@\x05\x03\x02\x02\x02AC\x05&\x14\x02" +
+		"BA\x03\x02\x02\x02BC\x03\x02\x02\x02CD\x03\x02\x02\x02DE\x07\x0E\x02\x02" +
+		"EF\x05(\x15\x02FJ\x05\x16\f\x02GI\x05\x18\r\x02HG\x03\x02\x02\x02IL\x03" +
+		"\x02\x02\x02JH\x03\x02\x02\x02JK\x03\x02\x02\x02KQ\x03\x02\x02\x02LJ\x03" +
+		"\x02\x02\x02MP\x05\b\x05\x02NP\x05\n\x06\x02OM\x03\x02\x02\x02ON\x03\x02" +
+		"\x02\x02PS\x03\x02\x02\x02QO\x03\x02\x02\x02QR\x03\x02\x02\x02R\x07\x03" +
+		"\x02\x02\x02SQ\x03\x02\x02\x02TV\x05&\x14\x02UT\x03\x02\x02\x02UV\x03" +
+		"\x02\x02\x02VW\x03\x02\x02\x02WX\x07\x04\x02\x02XY\x05(\x15\x02YZ\x05" +
+		"\x14\v\x02Z\t\x03\x02\x02\x02[]\x05&\x14\x02\\[\x03\x02\x02\x02\\]\x03" +
+		"\x02\x02\x02]^\x03\x02\x02\x02^_\x07\x05\x02\x02_`\x05(\x15\x02`a\x05" +
+		"\x14\v\x02ab\x05\f\x07\x02b\v\x03\x02\x02\x02cd\x07\r\x02\x02df\x05\x0E" +
+		"\b\x02eg\x05\x10\t\x02fe\x03\x02\x02\x02gh\x03\x02\x02\x02hf\x03\x02\x02" +
+		"\x02hi\x03\x02\x02\x02i\r\x03\x02\x02\x02jk\x05\x10\t\x02k\x0F\x03\x02" +
+		"\x02\x02ln\x07\x0F\x02\x02mo\x05\x12\n\x02nm\x03\x02\x02\x02op\x03\x02" +
+		"\x02\x02pn\x03\x02\x02\x02pq\x03\x02\x02\x02qz\x03\x02\x02\x02rt\x07\x0F" +
+		"\x02\x02su\x05\x12\n\x02ts\x03\x02\x02\x02uv\x03\x02\x02\x02vt\x03\x02" +
+		"\x02\x02vw\x03\x02\x02\x02wy\x03\x02\x02\x02xr\x03\x02\x02\x02y|\x03\x02" +
+		"\x02\x02zx\x03\x02\x02\x02z{\x03\x02\x02\x02{}\x03\x02\x02\x02|z\x03\x02" +
+		"\x02\x02}~\x07\x0F\x02\x02~\x11\x03\x02\x02\x02\x7F\x80\x05(\x15\x02\x80" +
+		"\x13\x03\x02\x02\x02\x81\x85\x05\x16\f\x02\x82\x84\x05\x18\r\x02\x83\x82" +
+		"\x03\x02\x02\x02\x84\x87\x03\x02\x02\x02\x85\x83\x03\x02\x02\x02\x85\x86" +
+		"\x03\x02\x02\x02\x86\x88\x03\x02\x02\x02\x87\x85\x03\x02\x02\x02\x88\x8C" +
+		"\x05\x1A\x0E\x02\x89\x8B\x05\x1C\x0F\x02\x8A\x89\x03\x02\x02\x02\x8B\x8E" +
+		"\x03\x02\x02\x02\x8C\x8A\x03\x02\x02\x02\x8C\x8D\x03\x02\x02\x02\x8D\x8F" +
+		"\x03\x02\x02\x02\x8E\x8C\x03\x02\x02\x02\x8F\x93\x05\x1E\x10\x02\x90\x92" +
+		"\x05 \x11\x02\x91\x90\x03\x02\x02\x02\x92\x95\x03\x02\x02\x02\x93\x91" +
+		"\x03\x02\x02\x02\x93\x94\x03\x02\x02\x02\x94\x99\x03\x02\x02\x02\x95\x93" +
+		"\x03\x02\x02\x02\x96\x98\x05\"\x12\x02\x97\x96\x03\x02\x02\x02\x98\x9B" +
+		"\x03\x02\x02\x02\x99\x97\x03\x02\x02\x02\x99\x9A\x03\x02\x02\x02\x9A\x15" +
+		"\x03\x02\x02\x02\x9B\x99\x03\x02\x02\x02\x9C\x9E\x05&\x14\x02\x9D\x9C" +
+		"\x03\x02\x02\x02\x9D\x9E\x03\x02\x02\x02\x9E\x9F\x03\x02\x02\x02\x9F\xA0" +
+		"\x07\x06\x02\x02\xA0\xA2\x05(\x15\x02\xA1\xA3\x05$\x13\x02\xA2\xA1\x03" +
+		"\x02\x02\x02\xA2\xA3\x03\x02\x02\x02\xA3\x17\x03\x02\x02\x02\xA4\xA6\x05" +
+		"&\x14\x02\xA5\xA4\x03\x02\x02\x02\xA5\xA6\x03\x02\x02\x02\xA6\xA7\x03" +
+		"\x02\x02\x02\xA7\xA8\x07\x07\x02\x02\xA8\xAA\x05(\x15\x02\xA9\xAB\x05" +
+		"$\x13\x02\xAA\xA9\x03\x02\x02\x02\xAA\xAB\x03\x02\x02\x02\xAB\x19\x03" +
+		"\x02\x02\x02\xAC\xAE\x05&\x14\x02\xAD\xAC\x03\x02\x02\x02\xAD\xAE\x03" +
+		"\x02\x02\x02\xAE\xAF\x03\x02\x02\x02\xAF\xB0\x07\b\x02\x02\xB0\xB2\x05" +
+		"(\x15\x02\xB1\xB3\x05$\x13\x02\xB2\xB1\x03\x02\x02\x02\xB2\xB3\x03\x02" +
+		"\x02\x02\xB3\x1B\x03\x02\x02\x02\xB4\xB6\x05&\x14\x02\xB5\xB4\x03\x02" +
+		"\x02\x02\xB5\xB6\x03\x02\x02\x02\xB6\xB7\x03\x02\x02\x02\xB7\xB8\x07\t" +
+		"\x02\x02\xB8\xBA\x05(\x15\x02\xB9\xBB\x05$\x13\x02\xBA\xB9\x03\x02\x02" +
+		"\x02\xBA\xBB\x03\x02\x02\x02\xBB\x1D\x03\x02\x02\x02\xBC\xBE\x05&\x14" +
+		"\x02\xBD\xBC\x03\x02\x02\x02\xBD\xBE\x03\x02\x02\x02\xBE\xBF\x03\x02\x02" +
+		"\x02\xBF\xC0\x07\n\x02\x02\xC0\xC2\x05(\x15\x02\xC1\xC3\x05$\x13\x02\xC2" +
+		"\xC1\x03\x02\x02\x02\xC2\xC3\x03\x02\x02\x02\xC3\x1F\x03\x02\x02\x02\xC4" +
+		"\xC6\x05&\x14\x02\xC5\xC4\x03\x02\x02\x02\xC5\xC6\x03\x02\x02\x02\xC6" +
+		"\xC7\x03\x02\x02\x02\xC7\xC8\x07\v\x02\x02\xC8\xCA\x05(\x15\x02\xC9\xCB" +
+		"\x05$\x13\x02\xCA\xC9\x03\x02\x02\x02\xCA\xCB\x03\x02\x02\x02\xCB!\x03" +
+		"\x02\x02\x02\xCC\xCE\x05&\x14\x02\xCD\xCC\x03\x02\x02\x02\xCD\xCE\x03" +
+		"\x02\x02\x02\xCE\xCF\x03\x02\x02\x02\xCF\xD0\x07\f\x02\x02\xD0\xD2\x05" +
+		"(\x15\x02\xD1\xD3\x05$\x13\x02\xD2\xD1\x03\x02\x02\x02\xD2\xD3\x03\x02" +
+		"\x02\x02\xD3#\x03\x02\x02\x02\xD4\xD5\x07\x17\x02\x02\xD5%\x03\x02\x02" +
+		"\x02\xD6\xD8\t\x02\x02\x02\xD7\xD6\x03\x02\x02\x02\xD8\xD9\x03\x02\x02" +
+		"\x02\xD9\xD7\x03\x02\x02\x02\xD9\xDA\x03\x02\x02\x02\xDA\'\x03\x02\x02" +
+		"\x02\xDB\xDD\x07\x14\x02\x02\xDC\xDB\x03\x02\x02\x02\xDD\xDE\x03\x02\x02" +
+		"\x02\xDE\xDC\x03\x02\x02\x02\xDE\xDF\x03\x02\x02\x02\xDF)\x03\x02\x02" +
+		"\x02&-16:<?BJOQU\\hpvz\x85\x8C\x93\x99\x9D\xA2\xA5\xAA\xAD\xB2\xB5\xBA" +
+		"\xBD\xC2\xC5\xCA\xCD\xD2\xD9\xDE";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!GherkinParser.__ATN) {
@@ -1247,6 +1264,9 @@ export class FeatureContext extends ParserRuleContext {
 	public FEATURE(): TerminalNode { return this.getToken(GherkinParser.FEATURE, 0); }
 	public contentText(): ContentTextContext {
 		return this.getRuleContext(0, ContentTextContext);
+	}
+	public tags(): TagsContext | undefined {
+		return this.tryGetRuleContext(0, TagsContext);
 	}
 	public background(): BackgroundContext | undefined {
 		return this.tryGetRuleContext(0, BackgroundContext);
