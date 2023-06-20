@@ -3,7 +3,7 @@ import {testRunner} from "../src";
 import {steps} from "./steps";
 import {World} from "./world";
 
-const tagFilter = (tags: string[]) => {
+const tagFilter = () => {
     return true;
 }
 

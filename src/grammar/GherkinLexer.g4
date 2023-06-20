@@ -16,13 +16,17 @@ BACKGROUND: 'Background:' | 'BACKGROUND';
 PIPE: '|';
 ONLY_TAG: '@only';
 SKIP_TAG: '@skip';
+TODO_TAG: '@todo';
+FAIL_TAG: '@fail';
+
 TAG: '@' [a-zA-Z0-9_]+;
 COMMENT: '#' ~[\r\n]* -> skip;
 
 TEXT_CHARACTER: ~[\r\n|] -> pushMode(TEXT_CHARACTER_MODE);
-WS: [\r\n]+ -> skip;
-WSS: [ \t\r\n]+ -> skip;
-
+NEWLINE: [\r\n];
+//WS: [\r\n]+ -> skip;
+//WSS: [ \r\n\t]+ -> skip;
+WSS: [ \t]+ -> skip;
 
 //DOC_STRING_QUOT: '"""' -> pushMode(DOC_STRING_MODE);
 DOC_STRING: '"""' .*? '"""';

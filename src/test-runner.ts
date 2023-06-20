@@ -1,11 +1,14 @@
 import {BufferedTokenStream, CharStreams} from "antlr4ts";
 import * as fs from "fs";
 import {glob} from "glob";
+import {EOL} from "os";
 import * as path from "path";
+
 import {FeatureFileVisitor} from "./feature-file-visitor";
 import {getCallSites} from "./get-call-sites";
 import {GherkinLexer} from "./grammar/GherkinLexer";
-import {GherkinParser} from "./grammar/GherkinParser";
+import {FeatureFileContext, GherkinParser} from "./grammar/GherkinParser";
+import {JestErrorListener} from "./jest-error-listener";
 import {StepDefinition} from "./step-definition";
 
 export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDefinition<TWorld>[], worldFactory: () => TWorld, tagFilter: (tags: string[])=> boolean = ()=> true) {
@@ -18,17 +21,25 @@ export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDef
         const absoluteFeaturePath = path.resolve(dir, featureFile);
         const relativeFeaturePath = path.relative(dir, absoluteFeaturePath);
 
-        const featureText = fs.readFileSync(absoluteFeaturePath, "utf-8")
-        const input = CharStreams.fromString(featureText);
-        const lexer = new GherkinLexer(input);
+        describe(relativeFeaturePath, () => {
+            const listener = new JestErrorListener();
+            const featureText = fs.readFileSync(absoluteFeaturePath, "utf-8") + EOL;
+            const input = CharStreams.fromString(featureText);
+            const lexer = new GherkinLexer(input);
+            lexer.removeErrorListeners();
+            lexer.addErrorListener(listener);
 
-        const lexerStream = new BufferedTokenStream(lexer);
-        const parser = new GherkinParser(lexerStream);
+            const lexerStream = new BufferedTokenStream(lexer);
+            const parser = new GherkinParser(lexerStream);
+            parser.removeErrorListeners();
+            parser.addErrorListener(listener);
 
-        const parsedFeatureFile = parser.featureFile();
+            const parsedFeatureFile: FeatureFileContext = parser.featureFile();
+            const visitor = new FeatureFileVisitor<TWorld>(worldFactory, stepDefinitions, tagFilter);
+            parsedFeatureFile.accept(visitor);
 
-        const visitor = new FeatureFileVisitor<TWorld>(relativeFeaturePath, worldFactory, stepDefinitions, tagFilter);
-        parsedFeatureFile.accept(visitor);
+            listener.reportErrors();
+        });
     }
 
 

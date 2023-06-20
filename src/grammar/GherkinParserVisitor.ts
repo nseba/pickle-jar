@@ -22,7 +22,9 @@ import { AndStepContext } from "./GherkinParser";
 import { ButStepContext } from "./GherkinParser";
 import { DocStringContext } from "./GherkinParser";
 import { TagsContext } from "./GherkinParser";
+import { ThenTagsContext } from "./GherkinParser";
 import { ContentTextContext } from "./GherkinParser";
+import { MultilineTextContext } from "./GherkinParser";
 
 
 /**
@@ -167,10 +169,24 @@ export interface GherkinParserVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitTags?: (ctx: TagsContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `GherkinParser.thenTags`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitThenTags?: (ctx: ThenTagsContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `GherkinParser.contentText`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitContentText?: (ctx: ContentTextContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `GherkinParser.multilineText`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitMultilineText?: (ctx: MultilineTextContext) => Result;
 }
 

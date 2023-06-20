@@ -10,7 +10,7 @@ export const whenSteps: StepDefinition<World>[] = [{
         /*nop*/
     }
 }, {
-    match: /^When the outline parameter is '(.+)'$/, step: (world, param) => {
+    match: /^When the outline parameter is '(.*)'$/, step: (world, param) => {
         world["outline-param"] = param;
     }
 }, {

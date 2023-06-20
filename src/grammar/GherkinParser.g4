@@ -4,42 +4,46 @@ options {
   tokenVocab=GherkinLexer;
 }
 
-featureFile: feature*;
+featureFile: feature* NEWLINE* EOF;
 
-feature: (tags)? FEATURE contentText (background? | (scenario | scenarioOutline)*);
+feature: (tags)? FEATURE multilineText background? (scenario | scenarioOutline)* NEWLINE*;
 
-background: (tags)? BACKGROUND contentText givenStep andGivenStep* (scenario | scenarioOutline)*;
+background: (tags)? NEWLINE* BACKGROUND multilineText givenStep andGivenStep*;
 
-scenario: (tags)? SCENARIO contentText step;
+scenario: (tags)? NEWLINE* SCENARIO multilineText step;
 
-scenarioOutline: (tags)? SCENARIO_OUTLINE contentText step examplesBlock;
+scenarioOutline: (tags)? NEWLINE* SCENARIO_OUTLINE multilineText step examplesBlock;
 
-examplesBlock: EXAMPLES tableHeader tableRow+;
+examplesBlock: NEWLINE* EXAMPLES NEWLINE+ tableHeader (tableRow)+;
 
 tableHeader: tableRow;
 
-tableRow: PIPE cell+ (PIPE cell+)* PIPE;
+tableRow: PIPE cell (PIPE cell)* PIPE NEWLINE;
 
-cell: contentText;
+cell: contentText?;
 
 step: givenStep andGivenStep* whenStep andWhenStep* thenStep andStep* butStep*;
 
-givenStep: (tags)? GIVEN contentText docString?;
+givenStep: (tags)? NEWLINE* GIVEN multilineText ((NEWLINE docString NEWLINE+)? | NEWLINE+);
 
-andGivenStep: (tags)? AND_GIVEN contentText docString?;
+andGivenStep: (tags)? NEWLINE* AND_GIVEN multilineText ((NEWLINE docString NEWLINE+)? | NEWLINE+);
 
-whenStep: (tags)? WHEN contentText  docString?;
+whenStep: (tags)? NEWLINE* WHEN multilineText  ((NEWLINE docString NEWLINE+)? | NEWLINE+);
 
-andWhenStep: (tags)?AND_WHEN contentText docString?;
+andWhenStep: (tags)? NEWLINE* AND_WHEN multilineText ((NEWLINE docString NEWLINE+)? | NEWLINE+);
 
-thenStep: (tags)? THEN contentText docString?;
+thenStep: (thenTags)? NEWLINE* THEN multilineText ((NEWLINE docString NEWLINE+)? | NEWLINE+);
 
-andStep: (tags)? AND contentText docString?;
+andStep: (thenTags)? NEWLINE* AND multilineText ((NEWLINE docString NEWLINE+)? | NEWLINE+);
 
-butStep: (tags)? BUT contentText docString?;
+butStep: (thenTags)? NEWLINE* BUT multilineText ((NEWLINE docString NEWLINE+)? | NEWLINE+);
 
 docString: DOC_STRING;
 
-tags: (ONLY_TAG | SKIP_TAG | TAG)+;
+tags: NEWLINE* ((ONLY_TAG | SKIP_TAG | TAG) NEWLINE*)+;
+
+thenTags: NEWLINE* ((ONLY_TAG | SKIP_TAG | FAIL_TAG | TODO_TAG | TAG) NEWLINE*)+;
 
 contentText: TEXT_CHARACTER+;
+
+multilineText: (TEXT_CHARACTER | NEWLINE)+;

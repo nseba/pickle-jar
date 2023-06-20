@@ -26,7 +26,7 @@ export const givenSteps: StepDefinition<World>[] = [{
         world["second step"] = "true";
     }
 }, {
-    match: /^Given a scenario outline named '(.+)'$/, step: (world, name) => {
+    match: /^Given a scenario outline named '(.*)'$/, step: (world, name) => {
         world["outline-name"] = name;
     }
 }, {

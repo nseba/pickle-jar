@@ -11,7 +11,9 @@ import {
     GivenStepContext,
     ScenarioContext,
     ScenarioOutlineContext,
+    TagsContext,
     ThenStepContext,
+    ThenTagsContext,
     WhenStepContext
 } from "./grammar/GherkinParser";
 import {GherkinParserVisitor} from "./grammar/GherkinParserVisitor";
@@ -23,46 +25,54 @@ interface WorldObject<TWorld> {
     world: TWorld
 }
 
+interface StepTags {
+    tags: string[];
+    isSkip: boolean;
+    isOnly: boolean;
+    isFail?: boolean;
+    isTodo?: boolean;
+}
+
+
 export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> implements GherkinParserVisitor<void> {
-    constructor(private readonly file: string, private readonly worldFactory: () => TWorld, private readonly stepDefinitions: StepDefinition<TWorld>[], private tagFilter: (tags: string[]) => boolean) {
+    constructor(private readonly worldFactory: () => TWorld, private readonly stepDefinitions: StepDefinition<TWorld>[], private tagFilter: (tags: string[]) => boolean) {
         super();
     }
 
     public visitFeatureFile(ctx: FeatureFileContext): void {
-        describe(this.file, () => {
-            this.visitChildren(ctx);
-        })
+        this.visitChildren(ctx);
     }
 
 
     public visitFeature(ctx: FeatureContext): void {
-        const tags = ctx.tags()?.TAG().map(tag => tag.text) ?? [];
+        const {tags, isOnly, isSkip} = this.extractTags(ctx.tags());
+
         if (!this.tagFilter(tags)) {
             return;
         }
 
-        const isOnly = !!ctx.tags()?.ONLY_TAG().length;
-        const isSkip = !!ctx.tags()?.SKIP_TAG().length;
-
         const describeFunc = isOnly ? describe.only : isSkip ? describe.skip : describe;
 
-        describeFunc(`Feature: ${ctx.contentText().text.trim()}`, () => {
-            this.visitChildren(ctx);
+        describeFunc(`Feature: ${ctx.multilineText().text.trim()}`, () => {
+            const backgroundCtx = ctx.background();
+            if (backgroundCtx) {
+                this.setupBackground(backgroundCtx, ctx)
+            } else {
+                this.visitChildren(ctx);
+            }
         })
     }
 
     public visitScenario(ctx: ScenarioContext, worldObject?: WorldObject<TWorld>): void {
-        const tags = ctx.tags()?.TAG().map(tag => tag.text) ?? [];
+        const {tags, isOnly, isSkip} = this.extractTags(ctx.tags());
+
         if (!this.tagFilter(tags)) {
             return;
         }
 
-        const isOnly = !!ctx.tags()?.ONLY_TAG().length;
-        const isSkip = !!ctx.tags()?.SKIP_TAG().length;
-
         const describeFunc = isOnly ? describe.only : isSkip ? describe.skip : describe;
 
-        describeFunc(`Scenario: ${ctx.contentText().text.trim()}`, () => {
+        describeFunc(`Scenario: ${ctx.multilineText().text.trim()}`, () => {
             const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
             beforeEach(() => {
                 if (!worldObject) {
@@ -78,41 +88,42 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         })
     }
 
-    public visitBackground(ctx: BackgroundContext): void {
-        const tags = ctx.tags()?.TAG().map(tag => tag.text) ?? [];
+    public setupBackground(backgroundCtx: BackgroundContext, ctx: FeatureContext): void {
+        const {tags, isOnly, isSkip} = this.extractTags(backgroundCtx.tags());
+
         if (!this.tagFilter(tags)) {
             return;
         }
 
-        const isOnly = !!ctx.tags()?.ONLY_TAG().length;
-        const isSkip = !!ctx.tags()?.SKIP_TAG().length;
 
         const describeFunc = isOnly ? describe.only : isSkip ? describe.skip : describe;
 
-        describeFunc(`Background: ${ctx.contentText().text.trim()}`, () => {
+        describeFunc(`Background: ${backgroundCtx.multilineText().text.trim()}`, () => {
             const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
             beforeEach(() => {
                 worldObj.world = this.worldFactory();
             })
 
-            const scenarios = [...ctx.scenario(), ...ctx.scenarioOutline()];
-            for (const scenario of scenarios) {
-                const steps = [ctx.givenStep(), ...ctx.andGivenStep(), scenario];
+            const steps = [backgroundCtx.givenStep(), ...backgroundCtx.andGivenStep(), ...ctx.scenario(), ...ctx.scenarioOutline()];
 
-                this.runNextStep(steps, undefined, worldObj);
-            }
+            this.runNextStep(steps, undefined, worldObj);
+            //
+            // const scenarios = [...backgroundCtx.scenario(), ...backgroundCtx.scenarioOutline()];
+            // for (const scenario of scenarios) {
+            //     const steps = [backgroundCtx.givenStep(), ...backgroundCtx.andGivenStep(), scenario];
+            //
+            //     this.runNextStep(steps, undefined, worldObj);
+            // }
         })
     }
 
-
     public visitScenarioOutline(ctx: ScenarioOutlineContext, worldObject?: WorldObject<TWorld>): void {
-        const tags = ctx.tags()?.TAG().map(tag => tag.text) ?? [];
+        const {tags, isOnly, isSkip} = this.extractTags(ctx.tags());
+
         if (!this.tagFilter(tags)) {
             return;
         }
 
-        const isOnly = !!ctx.tags()?.ONLY_TAG().length;
-        const isSkip = !!ctx.tags()?.SKIP_TAG().length;
 
         const describeFunc = isOnly ? describe.only : isSkip ? describe.skip : describe;
 
@@ -126,7 +137,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             }
             return item;
         })
-        const scenarioName = ctx.contentText().text.trim();
+        const scenarioName = ctx.multilineText().text.trim();
         describeFunc(`Scenario outline: ${scenarioName}`, () => {
             const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
             beforeEach(() => {
@@ -151,11 +162,28 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         return;
     }
 
+    private extractTags(tagsContext: TagsContext | undefined): StepTags {
+        const tags = tagsContext?.TAG().map(tag => tag.text) ?? [];
+        const isOnly = !!tagsContext?.ONLY_TAG().length;
+        const isSkip = !!tagsContext?.SKIP_TAG().length;
+        return {tags, isOnly, isSkip};
+    }
+
+    private extractTestTags(tagsContext: ThenTagsContext | undefined): StepTags {
+        const tags = tagsContext?.TAG().map(tag => tag.text) ?? [];
+        const isOnly = !!tagsContext?.ONLY_TAG().length;
+        const isSkip = !!tagsContext?.SKIP_TAG().length;
+        const isTodo = !!tagsContext?.TODO_TAG().length;
+        const isFail = !!tagsContext?.FAIL_TAG().length;
+        return {tags, isOnly, isSkip, isTodo, isFail};
+    }
+
     private replaceKeywords(input: string, replacements: Record<string, string> | undefined): string {
-        return input.replace(/<([^>]+)>/g, (match, keyword) => {
-            const replacement = replacements?.[keyword];
-            return replacement !== undefined ? replacement.replace(/\$/g, "\\$") : match;
-        });
+        return input
+            .replace(/<([^>]+)>/g, (match, keyword) => {
+                const replacement = replacements?.[keyword];
+                return replacement !== undefined ? replacement.replace(/\$/g, "\\$") : match;
+            });
     }
 
     private runNextStep(steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: {
@@ -165,13 +193,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         if (!step) {
             return;
         }
-        const tags = step.tags()?.TAG().map(tag => tag.text) ?? [];
-        if (!this.tagFilter(tags)) {
-            return;
-        }
 
-        const isOnly = !!step.tags()?.ONLY_TAG().length;
-        const isSkip = !!step.tags()?.SKIP_TAG().length;
 
         if (step instanceof ScenarioContext) {
             this.visitScenario(step, worldObject);
@@ -181,48 +203,61 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             return;
         }
 
+        let tags: StepTags;
+
+
         let prefix: string;
         let prepare = true;
         if (step instanceof GivenStepContext || step instanceof AndGivenStepContext) {
             prefix = 'Given';
+            tags = this.extractTags(step.tags());
         } else if (step instanceof WhenStepContext || step instanceof AndWhenStepContext) {
             prefix = 'When';
+            tags = this.extractTags(step.tags());
         } else if (step instanceof ThenStepContext || step instanceof AndStepContext) {
             prefix = "Then";
             prepare = false;
+            tags = this.extractTestTags(step.thenTags());
         } else {
             prefix = 'But';
             prepare = false;
+            tags = this.extractTestTags(step.thenTags());
+        }
+        if (!this.tagFilter(tags.tags)) {
+            return;
         }
 
-        const name = `${prefix} ${this.replaceKeywords(step.contentText().text.trim(), valueMap)}`;
-        const stepDefinition = this.getMatchingStepDefinition(name);
+        const name = `${prefix} ${this.replaceKeywords(step.multilineText().text.trim(), valueMap)}`;
+        const {match, step: stepCall} = this.getMatchingStepDefinition(name, !!tags.isTodo);
 
-        const {step: stepCall, match} = stepDefinition;
 
         const docStringContents = step.docString()?.DOC_STRING().text;
         const args = this.extractTestArgs(match, name, docStringContents, valueMap);
 
 
         if (prepare) {
-            this.definePrepareStep(name, stepCall, args, steps, valueMap, worldObject, isSkip, isOnly);
+            this.definePrepareStep(name, stepCall, args, steps, valueMap, worldObject, tags);
         } else {
-            this.defineTestStep(name, stepCall, args, steps, valueMap, worldObject, isSkip, isOnly);
+            this.defineTestStep(name, stepCall, args, steps, valueMap, worldObject, tags);
         }
 
     }
 
-    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, isSkip: boolean, isOnly: boolean) {
-        const itFunc = isOnly ? it.only : isSkip ? it.skip : it;
+    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, tags: StepTags) {
+        const itFunc = tags.isOnly ? it.only : tags.isSkip ? it.skip : tags.isTodo ? it.todo : tags.isFail ? it.failing : it;
 
-        itFunc(name, () => {
-            stepCall(worldObject.world, ...args);
-        })
+        if (tags.isTodo) {
+            itFunc(name);
+        } else {
+            itFunc(name, () => {
+                stepCall(worldObject.world, ...args);
+            })
+        }
         this.runNextStep(steps, valueMap, worldObject);
     }
 
-    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, isSkip: boolean, isOnly: boolean) {
-        const describeFunc = isOnly ? describe.only : isSkip ? describe.skip : describe;
+    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, tags: StepTags) {
+        const describeFunc = tags.isOnly ? describe.only : tags.isSkip ? describe.skip : describe;
 
         describeFunc(name, () => {
             beforeEach(() => {
@@ -250,16 +285,16 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         return args;
     }
 
-    private getMatchingStepDefinition(name: string) {
+    private getMatchingStepDefinition(name: string, provideNopBoilerplate: boolean) {
         const matchingStepDefinitions = this.stepDefinitions.filter(def => {
             return def.match.test(name);
         });
 
-        if (!matchingStepDefinitions.length) {
+        if (!matchingStepDefinitions.length && !provideNopBoilerplate) {
             throw new Error(`Missing step definition '${name}'`);
         } else if (matchingStepDefinitions.length > 1) {
             throw new Error(`Multiple step definition match '${name}':\n${matchingStepDefinitions.map(rule => rule.match.toString()).join("\n")}`);
         }
-        return matchingStepDefinitions[0];
+        return matchingStepDefinitions[0] ?? {match: /^.*$/, step: undefined};
     }
 }

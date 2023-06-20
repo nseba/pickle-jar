@@ -28,7 +28,7 @@ export const thenSteps: StepDefinition<World>[] = [{
         expect(world['second step']).toBe("true");
     }
 }, {
-    match: /^Then the world stores the '([^']+)' '([^']+)'/, step: (world, name, parameter) => {
+    match: /^Then the world stores the '([^']*)' '([^']*)'/, step: (world, name, parameter) => {
         expect(world['outline-name']).not.toBeUndefined();
         expect(world['outline-name']).toBe(name);
 

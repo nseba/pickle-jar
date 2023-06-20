@@ -145,10 +145,12 @@ const tagFilter = (tags: string[])=> {
     return tags.indexOf("@ui") === -1;
 }
 ```
-There are two builtin tags: `@skip` and `@only` which are handled differently than normal tags:
+There are several builtin tags which are handled differently than custom tags:
 
 * `@skip` - when used, the step and sub-steps are completely skipped (they are handled as Jest `describe.only` or `it.only` calls)
 * `@only` - when used, only the steps and sub-steps are executed (they are handled as Jest `describe.only` or `it.only` calls)
+* `@todo` - when used, the step is marked as a TODO and no step code is executed (they are handled as Jest `it.todo` calls)
+* `@fail` - when used, the step is expected to fail (thye are handled as Jest `it.failed` calls)
 
 ## Jest configuration
 Create a `jest.config.js` file in the project root (or update the existing one) to match the `runner.ts` file:
