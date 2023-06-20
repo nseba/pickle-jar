@@ -6,7 +6,7 @@ options {
 
 featureFile: feature* NEWLINE* EOF;
 
-feature: (tags)? FEATURE multilineText background? (scenario | scenarioOutline)* NEWLINE*;
+feature: (tags)?  NEWLINE* FEATURE multilineText background? (scenario | scenarioOutline)* NEWLINE*;
 
 background: (tags)? NEWLINE* BACKGROUND multilineText givenStep andGivenStep*;
 
@@ -18,7 +18,7 @@ examplesBlock: NEWLINE* EXAMPLES NEWLINE+ tableHeader (tableRow)+;
 
 tableHeader: tableRow;
 
-tableRow: PIPE cell (PIPE cell)* PIPE NEWLINE;
+tableRow: PIPE cell (PIPE cell)* PIPE NEWLINE+;
 
 cell: contentText?;
 
