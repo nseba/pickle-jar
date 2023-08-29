@@ -1,6 +1,6 @@
 {
   "name": "pickle-jar",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "repository": "git@github0.com:nseba/pickle-jar.git",
@@ -8,7 +8,9 @@
   "author": "Sebastian Negomireanu",
   "license": "MIT",
   "files": [
-    "dist/src"
+    "dist/src",
+    "README.md",
+    "LICENSE"
   ],
   "devDependencies": {
     "@types/glob": "^8.1.0",
