@@ -5,37 +5,35 @@ import {
     AndStepContext,
     AndWhenStepContext,
     BackgroundContext,
-    ButStepContext,
-    FeatureContext,
+    ButStepContext, FeatureContext,
     FeatureFileContext,
     GivenStepContext,
     ScenarioContext,
     ScenarioOutlineContext,
-    TagsContext,
     ThenStepContext,
-    ThenTagsContext,
     WhenStepContext
 } from "./grammar/GherkinParser";
 import {GherkinParserVisitor} from "./grammar/GherkinParserVisitor";
 import {StepDefinition} from "./step-definition";
+import {extractTags, extractTestTags} from "./tags";
+import {StepTags} from "./step-tags";
+import {WorldFactory} from "./world";
+import {FeatureContext as PickleFeatureContext} from "./feature-context";
 
 type SubSteps = (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext | ScenarioContext | ScenarioOutlineContext);
+
 
 interface WorldObject<TWorld> {
     world: TWorld
 }
 
-interface StepTags {
-    tags: string[];
-    isSkip: boolean;
-    isOnly: boolean;
-    isFail?: boolean;
-    isTodo?: boolean;
-}
-
 
 export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> implements GherkinParserVisitor<void> {
-    constructor(private readonly worldFactory: () => TWorld, private readonly stepDefinitions: StepDefinition<TWorld>[], private tagFilter: (tags: string[]) => boolean) {
+    constructor(
+        private readonly worldFactory: WorldFactory<TWorld>,
+        private readonly stepDefinitions: StepDefinition<TWorld>[],
+        private tagFilter: (tags: string[]) => boolean,
+        private readonly featureContext: PickleFeatureContext) {
         super();
     }
 
@@ -45,7 +43,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
 
     public visitFeature(ctx: FeatureContext): void {
-        const {tags, isOnly, isSkip} = this.extractTags(ctx.tags());
+        const {tags, isOnly, isSkip} = extractTags(ctx.tags());
 
         if (!this.tagFilter(tags)) {
             return;
@@ -64,7 +62,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
     }
 
     public visitScenario(ctx: ScenarioContext, worldObject?: WorldObject<TWorld>): void {
-        const {tags, isOnly, isSkip} = this.extractTags(ctx.tags());
+        const {tags, isOnly, isSkip} = extractTags(ctx.tags());
 
         if (!this.tagFilter(tags)) {
             return;
@@ -76,7 +74,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
             beforeEach(() => {
                 if (!worldObject) {
-                    worldObj.world = this.worldFactory();
+                    worldObj.world = this.worldFactory(this.featureContext);
                 }
             })
 
@@ -89,7 +87,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
     }
 
     public setupBackground(backgroundCtx: BackgroundContext, ctx: FeatureContext): void {
-        const {tags, isOnly, isSkip} = this.extractTags(backgroundCtx.tags());
+        const {tags, isOnly, isSkip} = extractTags(backgroundCtx.tags());
 
         if (!this.tagFilter(tags)) {
             return;
@@ -101,7 +99,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         describeFunc(`Background: ${backgroundCtx.multilineText().text.trim()}`, () => {
             const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
             beforeEach(() => {
-                worldObj.world = this.worldFactory();
+                worldObj.world = this.worldFactory(this.featureContext);
             })
 
             const steps = [backgroundCtx.givenStep(), ...backgroundCtx.andGivenStep(), ...ctx.scenario(), ...ctx.scenarioOutline()];
@@ -118,7 +116,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
     }
 
     public visitScenarioOutline(ctx: ScenarioOutlineContext, worldObject?: WorldObject<TWorld>): void {
-        const {tags, isOnly, isSkip} = this.extractTags(ctx.tags());
+        const {tags, isOnly, isSkip} = extractTags(ctx.tags());
 
         if (!this.tagFilter(tags)) {
             return;
@@ -142,7 +140,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             const worldObj: WorldObject<TWorld> = {} as WorldObject<TWorld>;
             beforeEach(() => {
                 if (!worldObject) {
-                    worldObj.world = this.worldFactory();
+                    worldObj.world = this.worldFactory(this.featureContext);
                 }
             })
 
@@ -162,21 +160,6 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         return;
     }
 
-    private extractTags(tagsContext: TagsContext | undefined): StepTags {
-        const tags = tagsContext?.TAG().map(tag => tag.text) ?? [];
-        const isOnly = !!tagsContext?.ONLY_TAG().length;
-        const isSkip = !!tagsContext?.SKIP_TAG().length;
-        return {tags, isOnly, isSkip};
-    }
-
-    private extractTestTags(tagsContext: ThenTagsContext | undefined): StepTags {
-        const tags = tagsContext?.TAG().map(tag => tag.text) ?? [];
-        const isOnly = !!tagsContext?.ONLY_TAG().length;
-        const isSkip = !!tagsContext?.SKIP_TAG().length;
-        const isTodo = !!tagsContext?.TODO_TAG().length;
-        const isFail = !!tagsContext?.FAIL_TAG().length;
-        return {tags, isOnly, isSkip, isTodo, isFail};
-    }
 
     private replaceKeywords(input: string, replacements: Record<string, string> | undefined): string {
         return input
@@ -210,18 +193,18 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         let prepare = true;
         if (step instanceof GivenStepContext || step instanceof AndGivenStepContext) {
             prefix = 'Given';
-            tags = this.extractTags(step.tags());
+            tags = extractTags(step.tags());
         } else if (step instanceof WhenStepContext || step instanceof AndWhenStepContext) {
             prefix = 'When';
-            tags = this.extractTags(step.tags());
+            tags = extractTags(step.tags());
         } else if (step instanceof ThenStepContext || step instanceof AndStepContext) {
             prefix = "Then";
             prepare = false;
-            tags = this.extractTestTags(step.thenTags());
+            tags = extractTestTags(step.thenTags());
         } else {
             prefix = 'But';
             prepare = false;
-            tags = this.extractTestTags(step.thenTags());
+            tags = extractTestTags(step.thenTags());
         }
         if (!this.tagFilter(tags.tags)) {
             return;

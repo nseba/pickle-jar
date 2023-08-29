@@ -10,16 +10,28 @@ import {GherkinLexer} from "./grammar/GherkinLexer";
 import {FeatureFileContext, GherkinParser} from "./grammar/GherkinParser";
 import {JestErrorListener} from "./jest-error-listener";
 import {StepDefinition} from "./step-definition";
+import {FeatureContext} from "./feature-context";
+import {WorldFactory} from "./world";
 
-export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDefinition<TWorld>[], worldFactory: () => TWorld, tagFilter: (tags: string[])=> boolean = ()=> true) {
+export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDefinition<TWorld>[], worldFactory: WorldFactory<TWorld>, tagFilter: (tags: string[])=> boolean = ()=> true) {
 
     const featureFiles = glob.sync(globPattern);
     for (const featureFile of featureFiles) {
         const callSite = getCallSites()[1];
+
+
         const file = callSite?.getFileName() ?? "";
         const dir = path.dirname(file);
         const absoluteFeaturePath = path.resolve(dir, featureFile);
         const relativeFeaturePath = path.relative(dir, absoluteFeaturePath);
+
+        const featureContext : FeatureContext = {
+            file: file,
+            directory: dir,
+            absoluteFeaturePath: absoluteFeaturePath,
+            relativeFeaturePath: relativeFeaturePath,
+        }
+
 
         describe(relativeFeaturePath, () => {
             const listener = new JestErrorListener();
@@ -35,7 +47,7 @@ export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDef
             parser.addErrorListener(listener);
 
             const parsedFeatureFile: FeatureFileContext = parser.featureFile();
-            const visitor = new FeatureFileVisitor<TWorld>(worldFactory, stepDefinitions, tagFilter);
+            const visitor = new FeatureFileVisitor<TWorld>(worldFactory, stepDefinitions, tagFilter, featureContext);
             parsedFeatureFile.accept(visitor);
 
             listener.reportErrors();
