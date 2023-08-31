@@ -19,6 +19,7 @@ import {extractTags, extractTestTags} from "./tags";
 import {StepTags} from "./step-tags";
 import {WorldFactory} from "./world";
 import {FeatureContext as PickleFeatureContext} from "./feature-context";
+import {dedent} from "./dedent";
 
 type SubSteps = (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext | ScenarioContext | ScenarioOutlineContext);
 
@@ -214,7 +215,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         const {match, step: stepCall} = this.getMatchingStepDefinition(name, !!tags.isTodo);
 
 
-        const docStringContents = step.docString()?.DOC_STRING().text;
+        const docStringContents = dedent(step.docString()?.DOC_STRING().text);
         const args = this.extractTestArgs(match, name, docStringContents, valueMap);
 
 
