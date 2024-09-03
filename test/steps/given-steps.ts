@@ -3,7 +3,7 @@ import {World} from "../world";
 
 export const givenSteps: StepDefinition<World>[] = [{
     match: /^Given a simple text$/, step: (world) => {
-        world['Simple text'];
+        world['Simple text'] = 'Simple text';
     }
 }, {
     match: /^Given the (\w+) word$/, step: (world, word) => {

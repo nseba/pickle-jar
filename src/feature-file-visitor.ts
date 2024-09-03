@@ -263,7 +263,6 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
                 try {
                     stepCall(worldObject.world, ...args);
                 } catch (error) {
-                    this.featureContext.absoluteFeaturePath
                     throw this.injectIntoStackTrace(error, `    at '${executionContext.step}' (${executionContext.absoluteFeaturePath}:${executionContext.startLine}:${executionContext.startChar})`)
                 }
             })
@@ -279,7 +278,6 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
                 try {
                     stepCall(worldObject.world, ...args);
                 } catch (error) {
-                    this.featureContext.absoluteFeaturePath
                     throw this.injectIntoStackTrace(error, `    at '${executionContext.step}' (${executionContext.absoluteFeaturePath}:${executionContext.startLine}:${executionContext.startChar})`)
                 }
             });
