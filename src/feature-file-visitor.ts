@@ -5,7 +5,8 @@ import {
     AndStepContext,
     AndWhenStepContext,
     BackgroundContext,
-    ButStepContext, FeatureContext,
+    ButStepContext,
+    FeatureContext,
     FeatureFileContext,
     GivenStepContext,
     ScenarioContext,
@@ -20,6 +21,7 @@ import {StepTags} from "./step-tags";
 import {WorldFactory} from "./world";
 import {FeatureContext as PickleFeatureContext} from "./feature-context";
 import {dedent} from "./dedent";
+import {ExecutionContext} from "./execution-context";
 
 type SubSteps = (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext | ScenarioContext | ScenarioOutlineContext);
 
@@ -192,6 +194,15 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
         let prefix: string;
         let prepare = true;
+        const executionContext: ExecutionContext = {
+            step: "",
+            file: this.featureContext.absoluteFeaturePath,
+            startLine: step.start.line,
+            startChar: step.start.charPositionInLine,
+            absoluteFeaturePath: this.featureContext.absoluteFeaturePath,
+            relativeFeaturePath: this.featureContext.relativeFeaturePath,
+            directory: this.featureContext.directory
+        };
         if (step instanceof GivenStepContext || step instanceof AndGivenStepContext) {
             prefix = 'Given';
             tags = extractTags(step.tags());
@@ -207,6 +218,9 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             prepare = false;
             tags = extractTestTags(step.thenTags());
         }
+
+        executionContext.step = prefix + ' ' + step.multilineText().text.trim();
+
         if (!this.tagFilter(tags.tags)) {
             return;
         }
@@ -220,32 +234,54 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
 
         if (prepare) {
-            this.definePrepareStep(name, stepCall, args, steps, valueMap, worldObject, tags);
+            this.definePrepareStep(name, stepCall, args, steps, valueMap, worldObject, tags, executionContext);
         } else {
-            this.defineTestStep(name, stepCall, args, steps, valueMap, worldObject, tags);
+            this.defineTestStep(name, stepCall, args, steps, valueMap, worldObject, tags, executionContext);
         }
 
     }
 
-    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, tags: StepTags) {
+    private injectIntoStackTrace(error: Error, entry: string) {
+        if (error && error.stack) {
+            const stackLines = error.stack.split('\n');
+            const firstStackLine = stackLines.findIndex(line => line.startsWith('    at '));
+            stackLines.splice(firstStackLine, 0, entry); // Insert the entry after the first line
+            error.stack = stackLines.join('\n');
+        }
+        return error;
+    }
+
+    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, tags: StepTags, executionContext: ExecutionContext) {
         const itFunc = tags.isOnly ? it.only : tags.isSkip ? it.skip : tags.isTodo ? it.todo : tags.isFail ? it.failing : it;
 
         if (tags.isTodo) {
             itFunc(name);
         } else {
+
+
             itFunc(name, () => {
-                stepCall(worldObject.world, ...args);
+                try {
+                    stepCall(worldObject.world, ...args);
+                } catch (error) {
+                    this.featureContext.absoluteFeaturePath
+                    throw this.injectIntoStackTrace(error, `    at '${executionContext.step}' (${executionContext.absoluteFeaturePath}:${executionContext.startLine}:${executionContext.startChar})`)
+                }
             })
         }
         this.runNextStep(steps, valueMap, worldObject);
     }
 
-    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, tags: StepTags) {
+    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, tags: StepTags, executionContext: ExecutionContext) {
         const describeFunc = tags.isOnly ? describe.only : tags.isSkip ? describe.skip : describe;
 
         describeFunc(name, () => {
             beforeEach(() => {
-                stepCall(worldObject.world, ...args);
+                try {
+                    stepCall(worldObject.world, ...args);
+                } catch (error) {
+                    this.featureContext.absoluteFeaturePath
+                    throw this.injectIntoStackTrace(error, `    at '${executionContext.step}' (${executionContext.absoluteFeaturePath}:${executionContext.startLine}:${executionContext.startChar})`)
+                }
             });
             this.runNextStep(steps, valueMap, worldObject)
         })
