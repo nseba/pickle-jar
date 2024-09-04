@@ -22,6 +22,7 @@ import {WorldFactory} from "./world";
 import {FeatureContext as PickleFeatureContext} from "./feature-context";
 import {dedent} from "./dedent";
 import {ExecutionContext} from "./execution-context";
+import {ParserRuleContext} from "antlr4ts/ParserRuleContext";
 
 type SubSteps = (GivenStepContext | AndGivenStepContext | WhenStepContext | AndWhenStepContext | ThenStepContext | AndStepContext | ButStepContext | ScenarioContext | ScenarioOutlineContext);
 
@@ -107,7 +108,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
             const steps = [backgroundCtx.givenStep(), ...backgroundCtx.andGivenStep(), ...ctx.scenario(), ...ctx.scenarioOutline()];
 
-            this.runNextStep(steps, undefined, worldObj);
+            this.runNextStep(steps, undefined, worldObj, ctx);
             //
             // const scenarios = [...backgroundCtx.scenario(), ...backgroundCtx.scenarioOutline()];
             // for (const scenario of scenarios) {
@@ -153,7 +154,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
                 const steps = [step.givenStep(), ...step.andGivenStep(), step.whenStep(), ...step.andWhenStep(), step.thenStep(), ...step.andStep(), ...step.butStep()];
 
-                this.runNextStep(steps, row, worldObject ?? worldObj);
+                this.runNextStep(steps, row, worldObject ?? worldObj, ctx);
 
             }
         })
@@ -174,7 +175,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
     private runNextStep(steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: {
         world: TWorld
-    }) {
+    }, ctx: ParserRuleContext | undefined = undefined) {
         const step = steps.shift();
         if (!step) {
             return;
@@ -219,7 +220,16 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
             tags = extractTestTags(step.thenTags());
         }
 
-        executionContext.step = prefix + ' ' + step.multilineText().text.trim();
+        let scenarioCtx = ""
+
+        if(ctx instanceof ScenarioContext) {
+            scenarioCtx = ctx.multilineText().text.trim();
+        } else if (ctx instanceof ScenarioOutlineContext) {
+            const valuesString = valueMap ? `[${Object.entries(valueMap).map((k, v) => `${k}=${v}`)}]` : "";
+            scenarioCtx = `${ctx.multilineText().text.trim()} ${valuesString}`;
+        }
+
+        executionContext.step = `${prefix} ${step.multilineText().text.trim()}${scenarioCtx ? ` (${scenarioCtx})` : ""}`;
 
         if (!this.tagFilter(tags.tags)) {
             return;
