@@ -86,7 +86,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
             const steps = [step.givenStep(), ...step.andGivenStep(), step.whenStep(), ...step.andWhenStep(), step.thenStep(), ...step.andStep(), ...step.butStep()];
 
-            this.runNextStep(steps, undefined, worldObject ?? worldObj);
+            this.runNextStep(steps, undefined, worldObject ?? worldObj, ctx);
         })
     }
 
@@ -175,7 +175,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
     private runNextStep(steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: {
         world: TWorld
-    }, ctx: ParserRuleContext | undefined = undefined) {
+    }, ctx: ParserRuleContext) {
         const step = steps.shift();
         if (!step) {
             return;
@@ -225,11 +225,11 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         if(ctx instanceof ScenarioContext) {
             scenarioCtx = ctx.multilineText().text.trim();
         } else if (ctx instanceof ScenarioOutlineContext) {
-            const valuesString = valueMap ? `[${Object.entries(valueMap).map((k, v) => `${k}=${v}`)}]` : "";
+            const valuesString = valueMap ? `[${Object.entries(valueMap).map(([k, v]) => `${k}:'${v}'`).join(", ")}]` : "";
             scenarioCtx = `${ctx.multilineText().text.trim()} ${valuesString}`;
         }
 
-        executionContext.step = `${prefix} ${step.multilineText().text.trim()}${scenarioCtx ? ` (${scenarioCtx})` : ""}`;
+        executionContext.step = `${prefix} ${step.multilineText().text.trim()}${scenarioCtx ? ` (Scenario: ${scenarioCtx})` : ""}`;
 
         if (!this.tagFilter(tags.tags)) {
             return;
@@ -244,9 +244,9 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
 
 
         if (prepare) {
-            this.definePrepareStep(name, stepCall, args, steps, valueMap, worldObject, tags, executionContext);
+            this.definePrepareStep(name, stepCall, args, steps, valueMap, worldObject, tags, executionContext, ctx);
         } else {
-            this.defineTestStep(name, stepCall, args, steps, valueMap, worldObject, tags, executionContext);
+            this.defineTestStep(name, stepCall, args, steps, valueMap, worldObject, tags, executionContext, ctx);
         }
 
     }
@@ -261,7 +261,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         return error;
     }
 
-    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, tags: StepTags, executionContext: ExecutionContext) {
+    private defineTestStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, tags: StepTags, executionContext: ExecutionContext, ctx: ParserRuleContext) {
         const itFunc = tags.isOnly ? it.only : tags.isSkip ? it.skip : tags.isTodo ? it.todo : tags.isFail ? it.failing : it;
 
         if (tags.isTodo) {
@@ -277,10 +277,10 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
                 }
             })
         }
-        this.runNextStep(steps, valueMap, worldObject);
+        this.runNextStep(steps, valueMap, worldObject, ctx);
     }
 
-    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, tags: StepTags, executionContext: ExecutionContext) {
+    private definePrepareStep(name: string, stepCall: (world: TWorld, ...params: string[]) => void, args: string[], steps: SubSteps[], valueMap: Record<string, string> | undefined, worldObject: WorldObject<TWorld>, tags: StepTags, executionContext: ExecutionContext, ctx: ParserRuleContext ) {
         const describeFunc = tags.isOnly ? describe.only : tags.isSkip ? describe.skip : describe;
 
         describeFunc(name, () => {
@@ -291,7 +291,7 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
                     throw this.injectIntoStackTrace(error, `    at '${executionContext.step}' (${executionContext.absoluteFeaturePath}:${executionContext.startLine}:${executionContext.startChar})`)
                 }
             });
-            this.runNextStep(steps, valueMap, worldObject)
+            this.runNextStep(steps, valueMap, worldObject, ctx)
         })
     }
 
