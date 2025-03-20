@@ -39,3 +39,16 @@ Feature: Running scenarios
       Then the first step ran
       And the second step ran
       But the third step didn't run
+
+    Scenario: Using docstrings with file type
+      Given the input string:
+      """yaml
+      item:
+        key: value
+      """
+      When running the test framework
+      Then the output string is:
+      """
+      item:
+        key: value
+      """
