@@ -304,8 +304,8 @@ export class FeatureFileVisitor<TWorld> extends AbstractParseTreeVisitor<void> i
         if (docStringContents) {
             const cleanedDocstring = this.replaceKeywords(docStringContents
                 .trim()
-                .replace(/^"""\w*/, "")
-                .replace(/"""$/, "")
+                .replace(/^("""|```)\w*/, "")
+                .replace(/("""|```)$/, "")
                 .split(/((\r\n)|\r|\n)]/)
                 .map(line => line.trim()).join(EOL), valueMap)
             args.push(cleanedDocstring);
