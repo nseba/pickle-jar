@@ -1,33 +1,27 @@
-import {BufferedTokenStream, CharStreams} from "antlr4ts";
+import { BufferedTokenStream, CharStreams } from "antlr4ts";
 import * as fs from "fs";
-import {glob} from "glob";
-import {EOL} from "os";
+import { glob } from "glob";
+import { EOL } from "os";
 import * as path from "path";
 
-import {FeatureFileVisitor} from "./feature-file-visitor";
-import {getCallSites} from "./get-call-sites";
-import {GherkinLexer} from "./grammar/GherkinLexer";
-import {FeatureFileContext, GherkinParser} from "./grammar/GherkinParser";
-import {JestErrorListener} from "./jest-error-listener";
-import {StepDefinition} from "./step-definition";
-import {FeatureContext} from "./feature-context";
-import {WorldFactory} from "./world";
+import { FeatureContext } from "./feature-context";
+import { FeatureFileVisitor } from "./feature-file-visitor";
+import { GherkinLexer } from "./grammar/GherkinLexer";
+import { FeatureFileContext, GherkinParser } from "./grammar/GherkinParser";
+import { JestErrorListener } from "./jest-error-listener";
+import { StepDefinition } from "./step-definition";
+import { WorldFactory } from "./world";
 
-export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDefinition<TWorld>[], worldFactory: WorldFactory<TWorld>, tagFilter: (tags: string[])=> boolean = ()=> true) {
+export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDefinition<TWorld>[], worldFactory: WorldFactory<TWorld>, tagFilter: (tags: string[])=> boolean = ()=> true, workDir: string = process.cwd()) {
 
     const featureFiles = glob.sync(globPattern);
     for (const featureFile of featureFiles) {
-        const callSite = getCallSites()[1];
+        
+        const absoluteFeaturePath = path.resolve(workDir, featureFile);
+        const relativeFeaturePath = path.relative(workDir, absoluteFeaturePath);
 
-
-        const file = callSite?.getFileName() ?? "";
-        const dir = path.dirname(file);
-        const absoluteFeaturePath = path.resolve(dir, featureFile);
-        const relativeFeaturePath = path.relative(dir, absoluteFeaturePath);
-
-        const featureContext : FeatureContext = {
-            file: file,
-            directory: dir,
+        const featureContext : FeatureContext = {            
+            directory: workDir,
             absoluteFeaturePath: absoluteFeaturePath,
             relativeFeaturePath: relativeFeaturePath,
         }
