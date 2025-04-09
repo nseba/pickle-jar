@@ -12,22 +12,35 @@ import { JestErrorListener } from "./jest-error-listener";
 import { StepDefinition } from "./step-definition";
 import { WorldFactory } from "./world";
 
-export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDefinition<TWorld>[], worldFactory: WorldFactory<TWorld>, tagFilter: (tags: string[])=> boolean = ()=> true, workDir: string = process.cwd()) {
+interface TestRunnerAllOptions {
+    workDir: string;
+    groupByFeaturePath: boolean;
+}
 
+export type TestRunnerOptions = Partial<TestRunnerAllOptions>;
+
+export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDefinition<TWorld>[], worldFactory: WorldFactory<TWorld>, tagFilter: (tags: string[])=> boolean = ()=> true, options?: TestRunnerOptions) {
+
+    const defaultOptions: TestRunnerAllOptions = {
+        workDir: process.cwd(),
+        groupByFeaturePath: true,
+    }
+    
+    const actualOptions = { ...defaultOptions, ...options };
+    
     const featureFiles = glob.sync(globPattern);
     for (const featureFile of featureFiles) {
         
-        const absoluteFeaturePath = path.resolve(workDir, featureFile);
-        const relativeFeaturePath = path.relative(workDir, absoluteFeaturePath);
+        const absoluteFeaturePath = path.resolve(actualOptions.workDir, featureFile);
+        const relativeFeaturePath = path.relative(actualOptions.workDir, absoluteFeaturePath);
 
         const featureContext : FeatureContext = {            
-            directory: workDir,
+            directory: actualOptions.workDir,
             absoluteFeaturePath: absoluteFeaturePath,
             relativeFeaturePath: relativeFeaturePath,
         }
 
-
-        describe(relativeFeaturePath, () => {
+        const run = () => {
             const listener = new JestErrorListener();
             const featureText = fs.readFileSync(absoluteFeaturePath, "utf-8") + EOL;
             const input = CharStreams.fromString(featureText);
@@ -45,7 +58,13 @@ export function testRunner<TWorld>(globPattern: string, stepDefinitions: StepDef
             parsedFeatureFile.accept(visitor);
 
             listener.reportErrors();
-        });
+        }
+
+        if (actualOptions.groupByFeaturePath) {
+            describe(relativeFeaturePath, run);
+        } else {
+            run();
+        }
     }
 
 
