@@ -1,6 +1,9 @@
 # pickle-jar
-[//]: <> (start placeholder for auto-badger)
+pickle-jar is an alternative to jest-cucumber and and Cucumber.js that runs on top of jest. `pickle-jar`
+allows defining test scnearios using Gherkin language and translates them into define/it blocks that run using jest.
+Compared to jest-cucumber, the output is more explicit and all steps are reperesented by jest describe blocks.
 
+[//]: <> (start placeholder for auto-badger)
 
 [![version](https://img.shields.io/npm/v/pickle-jar.svg?style=flat-square)](https://npmjs.org/pickle-jar)
 [![min size](https://img.shields.io/bundlephobia/min/pickle-jar?style=flat-square)](https://bundlephobia.com/result?p=pickle-jar)
@@ -9,20 +12,14 @@
 
 [![dependancies](https://img.shields.io/librariesio/release/npm/pickle-jar?color=%23007a1f&style=flat-square)](https://libraries.io/npm/pickle-jar)
 [![downloads](https://img.shields.io/npm/dm/pickle-jar?style=flat-square&color=%23007a1f)](https://npmcharts.com/compare/pickle-jar)
-[![all contributors](https://img.shields.io/github/all-contributors/nseba/pickle-jar?style=flat-square)](https://github.com/nseba/pickle-jar/graphs/contributors)
-[![code of conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square)](https://github.com/nseba/pickle-jar/blob/master/CODE_OF_CONDUCT.md)
 
 [![stargazers](https://img.shields.io/github/stars/nseba/pickle-jar?style=social)](https://github.com/nseba/pickle-jar/stargazers)
 [![number of forks](https://img.shields.io/github/forks/nseba/pickle-jar?style=social)](https://github.com/nseba/pickle-jar/fork)
 
 [//]: <> (end placeholder for auto-badger)
 
-Framework for writing Gherkin features and running them using Jest
-
 # Overview
-pickle-jar is an alternative to jest-cucumber and and Cucumber.js that runs on top of jest. `pickle-jar`
-allows defining test scnearios using Gherkin language and translates them into define/it blocks that run using jest.
-Compared to jest-cucumber, the output is more explicit and all steps are reperesented by jest describe blocks.
+
 
 The framework allows defining steps using regular expression matchers. Match groups are automatically passed as parameters
 to the step function.
